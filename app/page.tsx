@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from "framer-motion";
 import { HeroHighlight, Highlight } from '@/components/ui/hero-highlight';
 import { HeroImages } from '@/components/hero-images';
-import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
+import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import { HeroParallaxImages } from '@/components/hero-parallax-images';
 import { AdditionalInfo } from '@/components/additional-info';
 import Link from 'next/link';
@@ -24,33 +24,21 @@ const page = () => {
                 >
                     Create {" "}
                     <Highlight className='text-white'>
-                        text-behind-image
+                        text-underlay
                     </Highlight>
                     {" "} designs easily
                 </motion.h1>
             </HeroHighlight>
             
             <div className="text-lg text-center font-semibold mb-4">
-                300,000+ text behind image designs created
+                300,000+ text underlays created
             </div>
 
-            <Link href={'/app'} className='mb-10'>
-                <HoverBorderGradient containerClassName="rounded-full" as="button" className="dark:bg-black bg-white text-black dark:text-white flex items-center space-x-2">
-                    Open the app
-                </HoverBorderGradient>
-            </Link>
-
-            <div className="flex space-x-4">
-                <a href="https://www.producthunt.com/posts/text-behind-image?embed=true&utm_source=badge-top-post-topic-badge&utm_medium=badge&utm_souce=badge-text&#0045;behind&#0045;image" target="_blank">
-                    <img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-topic-badge.svg?post_id=494264&theme=light&period=monthly&topic_id=164" alt="Text&#0032;Behind&#0032;Image - Create&#0032;stunning&#0032;text&#0045;behind&#0045;image&#0032;designs&#0032;easily | Product Hunt" width="250" height="54" />
-                </a>
-                <a href="https://www.producthunt.com/posts/text-behind-image?embed=true&utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-text&#0045;behind&#0045;image" target="_blank">
-                    <img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=494264&theme=light&period=daily" alt="Text&#0032;Behind&#0032;Image - Create&#0032;stunning&#0032;text&#0045;behind&#0045;image&#0032;designs&#0032;easily | Product Hunt" width="250" height="54" />
-                </a>
-                <a href="https://www.producthunt.com/posts/text-behind-image?embed=true&utm_source=badge-top-post-topic-badge&utm_medium=badge&utm_souce=badge-text&#0045;behind&#0045;image" target="_blank">
-                    <img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-topic-badge.svg?post_id=494264&theme=light&period=monthly&topic_id=44" alt="Text&#0032;Behind&#0032;Image - Create&#0032;stunning&#0032;text&#0045;behind&#0045;image&#0032;designs&#0032;easily | Product Hunt" width="250" height="54" />
-                </a>
-            </div>
+            <Link href={'/app'} className="mb-10 block">
+  <ShimmerButton className="w-full md:w-auto text-lg font-semibold px-8 py-3 rounded-full">
+    Open the app
+  </ShimmerButton>
+</Link>
 
             <div className='w-full h-full mt-2'>
                 <HeroImages />
