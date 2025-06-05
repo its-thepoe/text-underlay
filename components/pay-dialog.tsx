@@ -346,10 +346,7 @@ const PayDialog: React.FC<PayDialogProps> = ({ userDetails, userEmail, isOpen, o
                     <Check className="flex-shrink-0 mt-0.5 h-4 w-4" />
                     <span className="text-muted-foreground">3D tilt effects</span>
                   </li>
-                  <li className="flex space-x-2">
-                    <Check className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                    <span className="text-muted-foreground">No ads</span>
-                  </li>
+
                 </ul>
               </CardContent>
             </div>
