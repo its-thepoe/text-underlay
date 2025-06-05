@@ -24,8 +24,7 @@ import { removeBackground } from "@imgly/background-removal";
 
 import '@/app/fonts.css';
 import PayDialog from '@/components/pay-dialog';
-import AppAds from '@/components/editor/app-ads';
-import FirecrawlAd from '@/ads/firecrawl';
+
 
 const Page = () => {
     const { user } = useUser();
@@ -247,9 +246,7 @@ const Page = () => {
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1609710199882100" crossOrigin="anonymous"></script>
             {user && session && session.user && currentUser ? (
                 <div className='flex flex-col h-screen'>
-                    {!currentUser.paid && (
-                        <FirecrawlAd />
-                    )}
+                    
                     <header className='flex flex-row items-center justify-between p-5 px-10'>
                         <h2 className="text-4xl md:text-2xl font-semibold tracking-tight">
                             <span className="block md:hidden">TBI</span>
@@ -398,9 +395,7 @@ const Page = () => {
                                         /> 
                                     )}
                                 </div>
-                                {!currentUser.paid && (
-                                    <AppAds />
-                                )}
+    
                             </div>
                             <div className='flex flex-col w-full md:w-1/2'>
                                 <Button variant={'secondary'} onClick={addNewTextSet}><PlusIcon className='mr-2'/> Add New Text Set</Button>
