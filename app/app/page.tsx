@@ -249,8 +249,8 @@ const Page = () => {
                     
                     <header className='flex flex-row items-center justify-between p-5 px-10'>
                         <h2 className="text-4xl md:text-2xl font-semibold tracking-tight">
-                            <span className="block md:hidden">TBI</span>
-                            <span className="hidden md:block">Text behind image editor</span>
+                            <span className="block md:hidden">Text Underlay</span>
+                            <span className="hidden md:block">Text Underlay Editor</span>
                         </h2>
                         <div className='flex gap-4 items-center'>
                             <input
@@ -297,7 +297,7 @@ const Page = () => {
                                 <DropdownMenuTrigger asChild>
                                     <Avatar className="cursor-pointer">
                                         <AvatarImage src={currentUser?.avatar_url} /> 
-                                        <AvatarFallback>TBI</AvatarFallback>
+                                        <AvatarFallback>{currentUser?.full_name?.[0]?.toUpperCase() ?? "?"}</AvatarFallback>
                                     </Avatar>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="w-56" align="end">
