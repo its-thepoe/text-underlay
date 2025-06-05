@@ -1,13 +1,13 @@
 # Text-Underlay Implementation Plan
 
 ## Status Legend
-- [ ]Completed
+- ✅ Completed
 - 🟡 In Progress
 - ❌ Blocked
 
 ## 1. Environment Setup
 
-- 🟡 Create a `.env.local` file with the necessary variables
+- ✅ Create a `.env.local` file with the necessary variables
   ```
   # Supabase - Required
   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
@@ -21,39 +21,38 @@
 
 ## 2. Supabase Setup
 
-- [ ]Create a Supabase account
-- [ ]Create a new project
-- [ ]Set up authentication methods (email/password, social logins)
-- [ ]Create necessary database tables:
-  - [ ]Users table (extended from auth.users)
-  - [ ]Images table (for storing image metadata)
-  - [ ]Subscriptions table (for Stripe integration)
-  - [ ]Notifications table (for in-app notifications)
-- [ ]Copy the Supabase URL and anon key to your `.env.local` file
+- ✅ Create a Supabase account
+- ✅ Create a new project
+- ✅ Set up authentication methods (Google login)
+- ✅ Create necessary database tables:
+  - ✅ Users table (extended from auth.users via profiles)
+  - ✅ Images table (for storing image metadata)
+  - ✅ Subscriptions table (for Stripe integration)
+  - ✅ Notifications table (for in-app notifications)
+- ✅ Copy the Supabase URL and anon key to your `.env.local` file
 
 ## 3. Stripe Integration
 
-- [ ] Create a Stripe account
-- [ ] Set up products/prices for your subscription tiers
-- [ ] Configure webhook endpoints for handling subscription events
-- [ ] Add the Stripe keys to your `.env.local` file
+- 🟡 Create a Stripe account
+- 🟡 Set up products/prices for your subscription tiers
+- 🟡 Configure webhook endpoints for handling subscription events
+- 🟡 Add the Stripe keys to your `.env.local` file
 
 ## 4. Notification System with Supabase
 
-- [ ]Use Supabase's real-time subscriptions for notifications
-- [ ]Create a notifications table in your database
-- [ ]Implement client-side subscription to notification changes
-- [ ]Add UI components for displaying notifications
+- 🟡 Use Supabase's real-time subscriptions for notifications
+- 🟡 Create a notifications table in your database
+- 🟡 Implement client-side subscription to notification changes
+- 🟡 Add UI components for displaying notifications
 
 ## 5. Code Implementation
 
-- [ ] Database schema:
-  - [ ] Create tables in Supabase
-  - [ ] Set up row-level security policies
-- [ ] Authentication flows:
-  - [ ] Sign up
-  - [ ] Sign in
-  - [ ] Password reset
+- ✅ Database schema:
+  - ✅ Create tables in Supabase
+  - ✅ Set up row-level security policies
+- ✅ Authentication flows:
+  - ✅ Sign up
+  - ✅ Sign in
 - [ ] Subscription handling:
   - [ ] Create subscription plans
   - [ ] Handle upgrades/downgrades
@@ -63,8 +62,8 @@
   - [ ] Text overlay/underlay features
   - [ ] User dashboard
 
-  - [ ] Build notification UI components
-  - [ ] Handle notification preferences
+- [ ] Build notification UI components
+- [ ] Handle notification preferences
 
 ## 6. Fix Firebase References
 
