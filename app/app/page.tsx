@@ -103,7 +103,7 @@ const Page = () => {
         const newId = Math.max(...textSets.map(set => set.id), 0) + 1;
         setTextSets(prev => [...prev, {
             id: newId,
-            text: 'edit',
+            text: 'Text',
             fontFamily: 'Inter',
             top: 0,
             left: 0,

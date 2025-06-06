@@ -7,7 +7,7 @@ export async function POST(req: Request, res: Response) {
         
         // Determine price and interval based on plan type
         const isAnnual = plan_type === 'ANNUAL';
-        const unitAmount = isAnnual ? 7 * 100 : 9 * 100; // $7 for annual, $9 for monthly
+        const unitAmount = isAnnual ? 3 * 100 : 5 * 100; // $3 for annual, $5 for monthly
         const interval = isAnnual ? 'year' : 'month';
         
         let session = await stripe.checkout.sessions.create({
@@ -22,7 +22,7 @@ export async function POST(req: Request, res: Response) {
                             recurring: {
                                 interval: interval
                             },
-                            unit_amount: isAnnual ? unitAmount * 12 : unitAmount, // $84 for annual billing
+                            unit_amount: isAnnual ? unitAmount * 12 : unitAmount, // $36 for annual billing
                         },
                         quantity: 1,
                     },
@@ -32,7 +32,7 @@ export async function POST(req: Request, res: Response) {
                     plan_type: plan_type
                 },
                 mode: 'subscription',
-                success_url: `http://textbehindimage.rexanwong.xyz/app`,
+                success_url: `http://localhost:3000/app`,
         });
 
         return Response.json({ paymentLink: session.url });
