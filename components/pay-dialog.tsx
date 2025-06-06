@@ -1,6 +1,10 @@
 "use client"
 
 import * as React from "react"
+
+const MONTHLY_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID || '';
+const YEARLY_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID || '';
+
 import axios from 'axios'
 import { useRouter } from "next/navigation"
 import {
@@ -44,17 +48,18 @@ const PlanCard: React.FC<Plan> = ({ userDetails, userEmail, title, description, 
     const [isConfirmDialogOpen, setIsConfirmDialogOpen] = React.useState(false);
     const [isAnnual, setIsAnnual] = React.useState(false);
     
-    const handleDirectToPaymentLink = async () => {
-        setLoading(true); 
+    const handleUpgradeToPro = async (isAnnual: boolean) => {
+        setLoading(true);
         try {
+            const priceId = isAnnual
+                ? 'price_1RX8qcC8LZ7MRfsEqGKO1kHB' // Yearly
+                : 'price_1RWnjqCT8xfit1gDCT7raron'; // Monthly
             const response = await axios.post('/api/create-checkout-session', {
                 user_id: userDetails.id,
                 email: userEmail,
-                plan_name: "Text Behind Image Pro Plan",
-                plan_type: isAnnual ? 'ANNUAL' : 'MONTHLY',
+                priceId,
             });
-
-            router.push(response.data.paymentLink);
+            window.location = response.data.paymentLink;
         } catch (error) {
             toast({
                 title: "Error",
@@ -135,8 +140,8 @@ const PlanCard: React.FC<Plan> = ({ userDetails, userEmail, title, description, 
                                 {loading ? 'Please wait' : 'Current Plan'}
                             </Button>
                         ) : (
-                            <Button onClick={handleDirectToPaymentLink} disabled={loading}>
-                                {loading ? 'Please wait' : 'Upgrade'}
+                            <Button onClick={() => handleUpgradeToPro(isAnnual)} disabled={loading}>
+                                {loading ? 'Please wait' : 'Upgrade to Pro'}
                             </Button>
                         )
                     ) : null}
@@ -171,16 +176,17 @@ const PayDialog: React.FC<PayDialogProps> = ({ userDetails, userEmail, isOpen, o
   const [isAnnual, setIsAnnual] = React.useState(true);
 
   const handleDirectToPaymentLink = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
+      const priceId = isAnnual
+        ? YEARLY_PRICE_ID
+        : MONTHLY_PRICE_ID
       const response = await axios.post('/api/create-checkout-session', {
         user_id: userDetails.id,
         email: userEmail,
-        plan_name: "Text Behind Image Pro Plan",
-        plan_type: isAnnual ? 'ANNUAL' : 'MONTHLY',
+        priceId,
       });
-
-      router.push(response.data.paymentLink);
+      window.location = response.data.paymentLink;
     } catch (error) {
       toast({
         title: "Error",
@@ -188,7 +194,7 @@ const PayDialog: React.FC<PayDialogProps> = ({ userDetails, userEmail, isOpen, o
         variant: "destructive"
       });
     } finally {
-      setLoading(false);   
+      setLoading(false);
     }
   }
 
@@ -314,7 +320,7 @@ const PayDialog: React.FC<PayDialogProps> = ({ userDetails, userEmail, isOpen, o
                 <CardTitle className="mb-2">Pro</CardTitle>
                 <div className="flex items-center justify-center mb-2">
                   <span className="font-bold text-6xl">
-                    ${isAnnual ? '7' : '9'}
+                    ${isAnnual ? '3' : '5'}
                   </span>
                   <span className="text-muted-foreground ml-2">/month</span>
                 </div>
