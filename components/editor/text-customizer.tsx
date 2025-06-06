@@ -87,7 +87,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
             <AccordionContent>
                 {/* Mobile Controls */}
                 <div className="md:hidden">
-                    <ScrollArea className="w-full">
+                    <ScrollArea className="w-full hide-scrollbar">
                         <div className="flex w-max gap-1 mb-2 p-1">
                             {controls.map((control) => (
                                 <button
@@ -369,5 +369,10 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
         </AccordionItem>
     );
 };
+
+// Hide scrollbar utility
+// Add this style globally or in a relevant CSS/SCSS file if not present
+// .hide-scrollbar::-webkit-scrollbar { display: none; }
+// .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 export default TextCustomizer;
