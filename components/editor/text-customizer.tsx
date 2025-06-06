@@ -250,7 +250,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                 </div>
 
                 {/* Desktop Layout */}
-                <div className="hidden md:block">
+                <div className="hidden md:block hide-scrollbar" style={{overflowY: 'auto'}}>
                     <InputField
                         attribute="text"
                         label="Text"
