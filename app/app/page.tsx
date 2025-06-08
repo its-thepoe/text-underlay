@@ -154,10 +154,15 @@ const Page = () => {
     bgImg.onload = () => {
         // Set natural size in imageMeta
         setNaturalSize(bgImg.width, bgImg.height);
-        canvas.width = bgImg.width;
-        canvas.height = bgImg.height;
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = bgImg.width * dpr;
+        canvas.height = bgImg.height * dpr;
+        canvas.style.width = `${bgImg.width}px`;
+        canvas.style.height = `${bgImg.height}px`;
+        ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset any existing transforms
+        ctx.scale(dpr, dpr);
 
-        ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(bgImg, 0, 0, bgImg.width, bgImg.height);
 
         textSets.forEach(textSet => {
             ctx.save();
