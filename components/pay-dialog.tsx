@@ -283,7 +283,6 @@ const PayDialog: React.FC<PayDialogProps> = ({ userDetails, userEmail, isOpen, o
                 <span className="font-bold text-6xl">$0</span>
               </CardHeader>
               <CardDescription className="text-center text-base text-muted-foreground">
-                Forever free
               </CardDescription>
               <CardContent>
                 <ul className="mt-7 space-y-2.5 text-sm">

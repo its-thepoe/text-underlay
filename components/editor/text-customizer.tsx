@@ -93,11 +93,14 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                             <button
                                 key={tab}
                                 onClick={() => setActiveControl(tab)}
-                                className={`flex-1 py-2 rounded-lg text-sm font-medium ${activeControl === tab ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}
+                                className={`flex-1 py-2 rounded-lg text-sm font-medium flex items-center justify-center ${activeControl === tab ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}
+                                aria-label={
+                                  tab === 'text' ? 'Text' : tab === 'position' ? 'Position' : 'Effects & Styling'
+                                }
                             >
-                                {tab === 'text' && 'Text'}
-                                {tab === 'position' && 'Position'}
-                                {tab === 'effects' && 'Effects'}
+                                {tab === 'text' && <TypeOutline size={22} />}
+                                {tab === 'position' && <Move size={22} />}
+                                {tab === 'effects' && <Palette size={22} />}
                             </button>
                         ))}
                     </div>
@@ -332,7 +335,12 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                 </div>
 
                 <div className="flex flex-row gap-2 my-8">
-                    <Button onClick={() => duplicateTextSet(textSet)}>Duplicate Text Set</Button>
+                    <Button 
+  onClick={() => duplicateTextSet(textSet)}
+  variant="secondary"
+>
+  Duplicate Text Set
+</Button>
                     <Button variant="destructive" onClick={() => removeTextSet(textSet.id)}>Remove Text Set</Button>
                 </div>
             </AccordionContent>

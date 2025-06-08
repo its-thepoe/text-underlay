@@ -432,7 +432,10 @@ useEffect(() => {
                                     )}
                                 </div>
                                 <div className='flex gap-2'>
-                                    <Button onClick={handleUploadImage}>
+                                    <Button
+                                        onClick={handleUploadImage}
+                                        variant="secondary"
+                                    >
                                         Upload image
                                     </Button>
                                     {selectedImage && (
@@ -454,7 +457,7 @@ useEffect(() => {
                                     <DropdownMenuLabel>
                                         <div className="flex flex-col space-y-1">
                                             <p className="text-sm font-medium leading-none">{currentUser?.full_name}</p>
-                                            <p className="text-xs leading-none text-muted-foreground">{user?.user_metadata.email}</p>
+                                            <p className="text-xs font-normal leading-none text-muted-foreground">{user?.user_metadata.email}</p>
                                         </div>
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
@@ -572,7 +575,7 @@ useEffect(() => {
     
                             </div>
                             <div className='flex flex-col w-full md:w-1/2'>
-                                <Button variant={'secondary'} onClick={addNewTextSet}><PlusIcon className='mr-2'/> Add New Text Set</Button>
+                                <Button variant="secondary" onClick={addNewTextSet}><PlusIcon className='mr-2'/> Add New Text Set</Button>
                                 <ScrollArea className="h-[calc(100vh-10rem)] p-2">
                                     <Accordion type="single" collapsible className="w-full mt-2">
                                         {textSets.map(textSet => (
