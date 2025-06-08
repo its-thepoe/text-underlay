@@ -128,7 +128,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                         {activeControl === 'color' && (
                             <ColorPicker
                                 attribute="color"
-                                label="Text Color"
+                                label="Text Colour"
                                 currentColor={textSet.color}
                                 handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                             />
@@ -266,7 +266,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                         />
                         <ColorPicker
                             attribute="color"
-                            label="Text Color"
+                            label="Text Colour"
                             currentColor={textSet.color}
                             handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                         />
