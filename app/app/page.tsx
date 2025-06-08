@@ -42,15 +42,28 @@ const Page = () => {
 // Autosave draft to localStorage every 3 seconds
 useEffect(() => {
   const id = setInterval(() => {
-    localStorage.setItem('draft', JSON.stringify({ textSets, selectedImage, uploadedImageBase64 }));
+    let safeBase64 = uploadedImageBase64;
+    // Only save base64 if it's under 2MB (2,000,000 chars)
+    if (safeBase64 && safeBase64.length > 2_000_000) {
+      console.warn('Image too large to autosave in draft. Only text will be saved.');
+      safeBase64 = null;
+    }
+    try {
+      localStorage.setItem('draft', JSON.stringify({ textSets, selectedImage, uploadedImageBase64: safeBase64 }));
+    } catch (e) {
+      console.warn('Draft not saved: localStorage quota exceeded.');
+    }
   }, 3000);
   return () => clearInterval(id);
 }, [textSets, selectedImage, uploadedImageBase64]);
 
+// Only show restore modal once per mount, even in strict mode
+const hasRestoredDraft = useRef(false);
 // On mount, prompt to restore draft if it exists
 useEffect(() => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || hasRestoredDraft.current) return;
   setTimeout(() => {
+    if (hasRestoredDraft.current) return;
     const draft = localStorage.getItem('draft');
     if (draft) {
       try {
@@ -70,6 +83,7 @@ useEffect(() => {
         }
       } catch {}
     }
+    hasRestoredDraft.current = true;
   }, 0);
 }, []);
 
