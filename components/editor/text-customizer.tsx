@@ -271,75 +271,84 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                             handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                         />
                     </div>
-                    <SliderField
-                        attribute="xPct"
-                        label="X Position (%)"
-                        min={-100}
-                        max={100}
-                        step={1}
-                        currentValue={textSet.xPct}
-                        handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                    />
-                    <SliderField
-                        attribute="yPct"
-                        label="Y Position (%)"
-                        min={-100}
-                        max={100}
-                        step={1}
-                        currentValue={textSet.yPct}
-                        handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                    />
-                    <SliderField
-                        attribute="letterSpacing"
-                        label="Letter Spacing"
-                        min={-20}
-                        max={100}
-                        step={1}
-                        currentValue={textSet.letterSpacing}
-                        handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                        disabled={!isPaidUser}
-                        premiumFeature={!isPaidUser}
-                    />
-                    <SliderField
-                        attribute="opacity"
-                        label="Text Opacity"
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        currentValue={textSet.opacity}
-                        handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                    />
-                    <SliderField
-                        attribute="rotation"
-                        label="Rotation"
-                        min={-360}
-                        max={360}
-                        step={1}
-                        currentValue={textSet.rotation}
-                        handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                    />
-                    <SliderField
-                        attribute="tiltX"
-                        label="Horizontal Tilt (3D effect)"
-                        min={-45}
-                        max={45}
-                        step={1}
-                        currentValue={textSet.tiltX}
-                        handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                        disabled={!isPaidUser}
-                        premiumFeature={!isPaidUser}
-                    />
-                    <SliderField
-                        attribute="tiltY"
-                        label="Vertical Tilt (3D effect)"
-                        min={-45}
-                        max={45}
-                        step={1}
-                        currentValue={textSet.tiltY}
-                        handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                        disabled={!isPaidUser}
-                        premiumFeature={!isPaidUser}
-                    />
+                    <div className="flex flex-col gap-2 mt-4">
+                        <SliderField
+                            attribute="xPct"
+                            label="X Position (%)"
+                            min={-100}
+                            max={100}
+                            step={1}
+                            currentValue={textSet.xPct}
+                            handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                            hasTopPadding={false}
+                        />
+                        <SliderField
+                            attribute="yPct"
+                            label="Y Position (%)"
+                            min={-100}
+                            max={100}
+                            step={1}
+                            currentValue={textSet.yPct}
+                            handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                            hasTopPadding={false}
+                        />
+                        <SliderField
+                            attribute="letterSpacing"
+                            label="Letter Spacing"
+                            min={-20}
+                            max={100}
+                            step={1}
+                            currentValue={textSet.letterSpacing}
+                            handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
+                            disabled={!isPaidUser}
+                            premiumFeature={!isPaidUser}
+                            hasTopPadding={false}
+                        />
+                        <SliderField
+                            attribute="opacity"
+                            label="Text Opacity"
+                            min={0}
+                            max={1}
+                            step={0.01}
+                            currentValue={textSet.opacity}
+                            handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                            hasTopPadding={false}
+                        />
+                        <SliderField
+                            attribute="rotation"
+                            label="Rotation"
+                            min={-360}
+                            max={360}
+                            step={1}
+                            currentValue={textSet.rotation}
+                            handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                            hasTopPadding={false}
+                        />
+                        <SliderField
+                            attribute="tiltX"
+                            label="Horizontal Tilt (3D effect)"
+                            min={-45}
+                            max={45}
+                            step={1}
+                            currentValue={textSet.tiltX}
+                            handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
+                            disabled={!isPaidUser}
+                            premiumFeature={!isPaidUser}
+                            hasTopPadding={false}
+                        />
+                        <SliderField
+                            attribute="tiltY"
+                            label="Vertical Tilt (3D effect)"
+                            min={-45}
+                            max={45}
+                            step={1}
+                            currentValue={textSet.tiltY}
+                            handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
+                            disabled={!isPaidUser}
+                            premiumFeature={!isPaidUser}
+                            hasTopPadding={false}
+                        />
+                    </div>
                 </div>
 
                 <div className="flex flex-row gap-2 my-8">
