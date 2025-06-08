@@ -88,55 +88,60 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
             <AccordionContent>
                 {/* Mobile Controls */}
                 <div className="md:hidden">
-                    <ScrollArea className="w-full hide-scrollbar">
-                        <div className="flex w-max gap-1 mb-2 p-1">
-                            {controls.map((control) => (
-                                <button
-                                    key={control.id}
-                                    onClick={() => setActiveControl(activeControl === control.id ? null : control.id)}
-                                    className={`flex flex-col items-center justify-center min-w-[4.2rem] h-[4.2rem] rounded-lg ${
-                                        activeControl === control.id ? 'bg-primary text-primary-foreground' : 'bg-secondary'
-                                    } ${control.premium && !isPaidUser ? 'opacity-70' : ''}`}
-                                >
-                                    {control.premium && !isPaidUser && <LockIcon size={12} className="absolute top-1 right-1" />}
-                                    {control.icon}
-                                    <span className="text-xs mt-1">{control.label}</span>
-                                </button>
-                            ))}
-                        </div>
-                        <ScrollBar orientation="horizontal" />
-                    </ScrollArea>
-
-                    <div>
+                    <div className="flex w-full gap-1 mb-2 p-1">
+                        {['text', 'position', 'effects'].map(tab => (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveControl(tab)}
+                                className={`flex-1 py-2 rounded-lg text-sm font-medium ${activeControl === tab ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}
+                            >
+                                {tab === 'text' && 'Text'}
+                                {tab === 'position' && 'Position'}
+                                {tab === 'effects' && 'Effects'}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="mt-2">
+                        {/* TEXT TAB */}
                         {activeControl === 'text' && (
-                            <InputField
-                                attribute="text"
-                                label="Text"
-                                currentValue={textSet.text}
-                                handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                            />
+                            <>
+                                <InputField
+                                    attribute="text"
+                                    label="Text"
+                                    currentValue={textSet.text}
+                                    handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                                />
+                                <FontFamilyPicker
+                                    attribute="fontFamily"
+                                    currentFont={textSet.fontFamily}
+                                    handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                                    userId={userId}
+                                />
+                                <SliderField
+                                    attribute="fontSizePct"
+                                    label="Text Size (% of image height)"
+                                    min={1}
+                                    max={100}
+                                    step={1}
+                                    currentValue={textSet.fontSizePct}
+                                    handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                                    pushUndoCheckpoint={() => pushUndoCheckpoint(textSet.id)}
+                                />
+                                <SliderField
+                                    attribute="fontWeight"
+                                    label="Font Weight"
+                                    min={100}
+                                    max={900}
+                                    step={100}
+                                    currentValue={textSet.fontWeight}
+                                    handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                                    pushUndoCheckpoint={() => pushUndoCheckpoint(textSet.id)}
+                                />
+                            </>
                         )}
-
-                        {activeControl === 'fontFamily' && (
-                            <FontFamilyPicker
-                                attribute="fontFamily"
-                                currentFont={textSet.fontFamily}
-                                handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                                userId={userId}
-                            />
-                        )}
-
-                        {activeControl === 'color' && (
-                            <ColorPicker
-                                attribute="color"
-                                label="Text Colour"
-                                currentColor={textSet.color}
-                                handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                            />
-                        )}
-
+                        {/* POSITION TAB */}
                         {activeControl === 'position' && (
-                            <div className="space-y-4">
+                            <>
                                 <SliderField
                                     attribute="xPct"
                                     label="X Position (%)"
@@ -157,99 +162,69 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                                     handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                                     pushUndoCheckpoint={() => pushUndoCheckpoint(textSet.id)}
                                 />
-                            </div>
+                                <SliderField
+                                    attribute="rotation"
+                                    label="Rotation"
+                                    min={-360}
+                                    max={360}
+                                    step={1}
+                                    currentValue={textSet.rotation}
+                                    handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                                />
+                                <SliderField
+                                    attribute="tiltX"
+                                    label="Horizontal Tilt (3D effect)"
+                                    min={-90}
+                                    max={90}
+                                    step={1}
+                                    currentValue={textSet.tiltX}
+                                    handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
+                                    disabled={!isPaidUser}
+                                    premiumFeature={!isPaidUser}
+                                />
+                                <SliderField
+                                    attribute="tiltY"
+                                    label="Vertical Tilt (3D effect)"
+                                    min={-90}
+                                    max={90}
+                                    step={1}
+                                    currentValue={textSet.tiltY}
+                                    handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
+                                    disabled={!isPaidUser}
+                                    premiumFeature={!isPaidUser}
+                                />
+                            </>
                         )}
-
-                        {activeControl === 'fontSize' && (
-                            <SliderField
-                                attribute="fontSizePct"
-                                label="Text Size (% of image height)"
-                                min={1}
-                                max={100}
-                                step={1}
-                                currentValue={textSet.fontSizePct}
-                                handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                                pushUndoCheckpoint={() => pushUndoCheckpoint(textSet.id)}
-                            />
-                        )}
-
-                        {activeControl === 'fontWeight' && (
-                            <SliderField
-                                attribute="fontWeight"
-                                label="Font Weight"
-                                min={100}
-                                max={900}
-                                step={100}
-                                currentValue={textSet.fontWeight}
-                                handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                                pushUndoCheckpoint={() => pushUndoCheckpoint(textSet.id)}
-                            />
-                        )}
-                        
-                        {activeControl === 'letterSpacing' && (
-                            <SliderField
-                                attribute="letterSpacing"
-                                label="Letter Spacing"
-                                min={-20}
-                                max={100}
-                                step={1}
-                                currentValue={textSet.letterSpacing}
-                                handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                                disabled={!isPaidUser}
-                                premiumFeature={!isPaidUser}
-                            />
-                        )}
-
-                        {activeControl === 'opacity' && (
-                            <SliderField
-                                attribute="opacity"
-                                label="Text Opacity"
-                                min={0}
-                                max={1}
-                                step={0.01}
-                                currentValue={textSet.opacity}
-                                handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                            />
-                        )}
-
-                        {activeControl === 'rotation' && (
-                            <SliderField
-                                attribute="rotation"
-                                label="Rotation"
-                                min={-360}
-                                max={360}
-                                step={1}
-                                currentValue={textSet.rotation}
-                                handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                            />
-                        )}
-
-                        {activeControl === 'tiltX' && (
-                            <SliderField
-                                attribute="tiltX"
-                                label="Horizontal Tilt"
-                                min={-45}
-                                max={45}
-                                step={1}
-                                currentValue={textSet.tiltX}
-                                handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                                disabled={!isPaidUser}
-                                premiumFeature={!isPaidUser}
-                            />
-                        )}
-
-                        {activeControl === 'tiltY' && (
-                            <SliderField
-                                attribute="tiltY"
-                                label="Vertical Tilt"
-                                min={-45}
-                                max={45}
-                                step={1}
-                                currentValue={textSet.tiltY}
-                                handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                                disabled={!isPaidUser}
-                                premiumFeature={!isPaidUser}
-                            />
+                        {/* EFFECTS TAB */}
+                        {activeControl === 'effects' && (
+                            <>
+                                <ColorPicker
+                                    attribute="color"
+                                    label="Text Colour"
+                                    currentColor={textSet.color}
+                                    handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                                />
+                                <SliderField
+                                    attribute="opacity"
+                                    label="Text Opacity"
+                                    min={0}
+                                    max={1}
+                                    step={0.01}
+                                    currentValue={textSet.opacity}
+                                    handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                                />
+                                <SliderField
+                                    attribute="letterSpacing"
+                                    label="Letter Spacing"
+                                    min={-20}
+                                    max={100}
+                                    step={1}
+                                    currentValue={textSet.letterSpacing}
+                                    handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
+                                    disabled={!isPaidUser}
+                                    premiumFeature={!isPaidUser}
+                                />
+                            </>
                         )}
                     </div>
                 </div>

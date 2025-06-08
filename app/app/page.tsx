@@ -470,73 +470,21 @@ useEffect(() => {
                         <div className='flex-1 flex flex-col md:flex-row gap-4 md:gap-8 overflow-hidden w-full h-full px-2 md:px-8 py-2'>
                             {/* Image Preview + Controls wrapper */}
                             <div className='flex flex-1 flex-col md:flex-row gap-4 w-full h-full'>
-                                {/* Image Preview Section */}
-                                <div className='flex-1 flex items-center justify-center p-1 md:p-6 min-h-[500px]'>
-                                    <div ref={previewRef} className='relative w-full max-w-[480px] aspect-[3/4] bg-white border border-gray-200 shadow-lg flex items-center justify-center overflow-hidden rounded-lg'>
-                                        {isImageSetupDone ? (
-                                            <Image
-                                                src={selectedImage}
-                                                alt="Uploaded"
-                                                layout="fill"
-                                                objectFit="contain"
-                                                objectPosition="center"
-                                                onLoadingComplete={img => {
-                                                    setNaturalSize(img.naturalWidth, img.naturalHeight);
-                                                }}
-                                            />
-                                        ) : (
-                                            <span className='flex items-center w-full gap-2'><ReloadIcon className='animate-spin' /> Loading, please wait</span>
-                                        )}
-                                        {isImageSetupDone && textSets.map(textSet => {
-                                            const previewWidth = previewRef.current?.clientWidth || 1;
-                                            const previewHeight = previewRef.current?.clientHeight || 1;
-                                            const pxToPxPreview = (axis: 'x' | 'y', pct: number) => {
-                                                if (axis === 'x') return (pct / 100) * previewWidth;
-                                                if (axis === 'y') return (pct / 100) * previewHeight;
-                                                return 0;
-                                            };
-                                            const previewTop = `calc(50% - ${pxToPxPreview('y', textSet.yPct || 0)}px)`;
-                                            const previewLeft = `calc(50% + ${pxToPxPreview('x', textSet.xPct || 0)}px)`;
-                                            const previewFontSize = `${pxToPxPreview('y', textSet.fontSizePct || 10)}px`;
-                                            return (
-                                                <div
-                                                    key={textSet.id}
-                                                    style={{
-                                                        position: 'absolute',
-                                                        top: previewTop,
-                                                        left: previewLeft,
-                                                        transform: `translate(-50%, -50%) rotate(${textSet.rotation}deg) perspective(1000px) rotateX(${textSet.tiltX}deg) rotateY(${textSet.tiltY}deg)`,
-                                                        color: textSet.color,
-                                                        textAlign: 'center',
-                                                        fontSize: previewFontSize,
-                                                        fontWeight: textSet.fontWeight,
-                                                        fontFamily: textSet.fontFamily,
-                                                        opacity: textSet.opacity,
-                                                        letterSpacing: `${textSet.letterSpacing}px`,
-                                                        transformStyle: 'preserve-3d',
-                                                    }}
-                                                >
-                                                    {textSet.text}
-                                                </div>
-                                            );
-                                        })}
-                                        {removedBgImageUrl && (
-                                            <Image
-                                                src={removedBgImageUrl}
-                                                alt="Removed bg"
-                                                layout="fill"
-                                                objectFit="contain" 
-                                                objectPosition="center" 
-                                                className="absolute top-0 left-0 w-full h-full"
-                                            /> 
-                                        )}
-                                    </div>
-                                </div>
+                             
                                 {/* Controls Section */}
-                                <div className='w-full md:w-[420px] max-w-full flex flex-col overflow-y-auto h-full pr-1'>
-                                    <Button onClick={saveCompositeImage} className='md:hidden'>
-                                        Save image
-                                    </Button>
+                                <div className='w-full md:w-[420px] max-w-full flex flex-col overflow-y-auto h-full pr-1 md:hidden'>
+                                    <button
+                                        onClick={saveCompositeImage}
+                                        className="fixed z-50 md:hidden bottom-4 right-4 w-12 h-12 rounded-full bg-black text-white flex items-center justify-center shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                                        aria-label="Save image"
+                                        style={{ bottom: 16, right: 16 }}
+                                    >
+                                        {/* Download Icon SVG */}
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M12 5v14" />
+                                            <path d="M19 12l-7 7-7-7" />
+                                        </svg>
+                                    </button>
                                     <div className='block md:hidden'>
                                         {currentUser.paid ? (
                                             <p className='text-sm'>
@@ -560,7 +508,7 @@ useEffect(() => {
                                 </div>
                                 <div
     ref={previewRef}
-    className="min-h-[400px] w-[80%] p-4 border border-border rounded-lg relative overflow-hidden"
+    className="min-h-[400px] w-full p-4 border border-border rounded-lg relative overflow-hidden"
 >
     {isImageSetupDone ? (
         <Image
