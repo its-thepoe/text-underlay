@@ -478,7 +478,7 @@ useEffect(() => {
                                 <div className='w-full md:w-[420px] max-w-full flex flex-col overflow-y-auto h-full pr-1 md:hidden'>
                                     <button
                                         onClick={saveCompositeImage}
-                                        className="fixed z-50 md:hidden bottom-4 right-4 w-12 h-12 rounded-full bg-black text-white flex items-center justify-center shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                                        className="fixed z-50 md:hidden bottom-4 right-4 w-12 h-12 rounded-full bg-black text-white flex items-center justify-center shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary border border-gray-200 dark:bg-neutral-800 dark:border-gray-500 dark:shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
                                         aria-label="Save image"
                                         style={{ bottom: 16, right: 16 }}
                                     >
