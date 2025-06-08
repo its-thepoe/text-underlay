@@ -18,10 +18,10 @@ interface TextCustomizerProps {
         id: number;
         text: string;
         fontFamily: string;
-        top: number;
-        left: number;
+        xPct: number; // -100 to 100
+        yPct: number; // -100 to 100
         color: string;
-        fontSize: number;
+        fontSizePct: number; // 1 to 100 (relative to image height)
         fontWeight: number;
         opacity: number;
         rotation: number;
@@ -137,21 +137,21 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                         {activeControl === 'position' && (
                             <div className="space-y-4">
                                 <SliderField
-                                    attribute="left"
-                                    label="X Position"
-                                    min={-200}
-                                    max={200}
-                                    step={1}
-                                    currentValue={textSet.left}
-                                    handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                                />
-                                <SliderField
-                                    attribute="top"
-                                    label="Y Position"
+                                    attribute="xPct"
+                                    label="X Position (%)"
                                     min={-100}
                                     max={100}
                                     step={1}
-                                    currentValue={textSet.top}
+                                    currentValue={textSet.xPct}
+                                    handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                                />
+                                <SliderField
+                                    attribute="yPct"
+                                    label="Y Position (%)"
+                                    min={-100}
+                                    max={100}
+                                    step={1}
+                                    currentValue={textSet.yPct}
                                     handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                                 />
                             </div>
@@ -159,12 +159,12 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
 
                         {activeControl === 'fontSize' && (
                             <SliderField
-                                attribute="fontSize"
-                                label="Text Size"
-                                min={10}
-                                max={800}
+                                attribute="fontSizePct"
+                                label="Text Size (% of image height)"
+                                min={1}
+                                max={100}
                                 step={1}
-                                currentValue={textSet.fontSize}
+                                currentValue={textSet.fontSizePct}
                                 handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                             />
                         )}
@@ -272,40 +272,21 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                         />
                     </div>
                     <SliderField
-                        attribute="left"
-                        label="X Position"
-                        min={-200}
-                        max={200}
-                        step={1}
-                        currentValue={textSet.left}
-                        hasTopPadding={false}
-                        handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                    />
-                    <SliderField
-                        attribute="top"
-                        label="Y Position"
+                        attribute="xPct"
+                        label="X Position (%)"
                         min={-100}
                         max={100}
                         step={1}
-                        currentValue={textSet.top}
+                        currentValue={textSet.xPct}
                         handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                     />
                     <SliderField
-                        attribute="fontSize"
-                        label="Text Size"
-                        min={10}
-                        max={800}
+                        attribute="yPct"
+                        label="Y Position (%)"
+                        min={-100}
+                        max={100}
                         step={1}
-                        currentValue={textSet.fontSize}
-                        handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
-                    />
-                    <SliderField
-                        attribute="fontWeight"
-                        label="Font Weight"
-                        min={100}
-                        max={900}
-                        step={100}
-                        currentValue={textSet.fontWeight}
+                        currentValue={textSet.yPct}
                         handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                     />
                     <SliderField

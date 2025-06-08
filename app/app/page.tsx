@@ -3,6 +3,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { setNaturalSize, setPreviewSize, pctToPx } from '@/lib/imageMeta';
 
 import { useUser } from '@/hooks/useUser';
 import { useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react';
@@ -39,6 +40,7 @@ const Page = () => {
     const [isPayDialogOpen, setIsPayDialogOpen] = useState<boolean>(false); 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const previewRef = useRef<HTMLDivElement>(null);
 
     const getCurrentUser = async (userId: string) => {
         try {
@@ -94,6 +96,11 @@ const Page = () => {
                     .select();
             }
             
+            const img = new window.Image();
+            img.src = imageUrl;
+            img.onload = () => {
+                setNaturalSize(img.width, img.height);
+            };
         } catch (error) {
             console.error(error);
         }
@@ -105,10 +112,10 @@ const Page = () => {
             id: newId,
             text: 'Text',
             fontFamily: 'Inter',
-            top: 0,
-            left: 0,
+            xPct: 50,
+            yPct: 50,
             color: 'white',
-            fontSize: 200,
+            fontSizePct: 10,
             fontWeight: 800,
             opacity: 1,
             shadowColor: 'rgba(0, 0, 0, 0.8)',
@@ -136,104 +143,94 @@ const Page = () => {
     };
 
     const saveCompositeImage = () => {
-        if (!canvasRef.current || !isImageSetupDone) return;
-    
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-    
-        const bgImg = new (window as any).Image();
-        bgImg.crossOrigin = "anonymous";
-        bgImg.onload = () => {
-            canvas.width = bgImg.width;
-            canvas.height = bgImg.height;
-    
-            ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-    
-            textSets.forEach(textSet => {
-                ctx.save();
-                
-                // Set up text properties
-                ctx.font = `${textSet.fontWeight} ${textSet.fontSize * 3}px ${textSet.fontFamily}`;
-                ctx.fillStyle = textSet.color;
-                ctx.globalAlpha = textSet.opacity;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.letterSpacing = `${textSet.letterSpacing}px`;
-    
-                const x = canvas.width * (textSet.left + 50) / 100;
-                const y = canvas.height * (50 - textSet.top) / 100;
-    
-                // Move to position first
-                ctx.translate(x, y);
-                
-                // Apply 3D transforms
-                const tiltXRad = (-textSet.tiltX * Math.PI) / 180;
-                const tiltYRad = (-textSet.tiltY * Math.PI) / 180;
-    
-                // Use a simpler transform that maintains the visual tilt
-                ctx.transform(
-                    Math.cos(tiltYRad),          // Horizontal scaling
-                    Math.sin(0),          // Vertical skewing
-                    -Math.sin(0),         // Horizontal skewing
-                    Math.cos(tiltXRad),          // Vertical scaling
-                    0,                           // Horizontal translation
-                    0                            // Vertical translation
-                );
-    
-                // Apply rotation last
-                ctx.rotate((textSet.rotation * Math.PI) / 180);
-    
-                if (textSet.letterSpacing === 0) {
-                    // Use standard text rendering if no letter spacing
-                    ctx.fillText(textSet.text, 0, 0);
-                } else {
-                    // Manual letter spacing implementation
-                    const chars = textSet.text.split('');
-                    let currentX = 0;
-                    // Calculate total width to center properly
-                    const totalWidth = chars.reduce((width, char, i) => {
-                        const charWidth = ctx.measureText(char).width;
-                        return width + charWidth + (i < chars.length - 1 ? textSet.letterSpacing : 0);
-                    }, 0);
-                    
+    if (!canvasRef.current || !isImageSetupDone) return;
 
-                
-                    // Start position (centered)
-                    currentX = -totalWidth / 2;
-                    
-                    // Draw each character with spacing
-                    chars.forEach((char, i) => {
-                        const charWidth = ctx.measureText(char).width;
-                        ctx.fillText(char, currentX + charWidth / 2, 0);
-                        currentX += charWidth + textSet.letterSpacing;
-                    });
-                }
-                ctx.restore();
-            });
-    
-            if (removedBgImageUrl) {
-                const removedBgImg = new (window as any).Image();
-                removedBgImg.crossOrigin = "anonymous";
-                removedBgImg.onload = () => {
-                    ctx.drawImage(removedBgImg, 0, 0, canvas.width, canvas.height);
-                    triggerDownload();
-                };
-                removedBgImg.src = removedBgImageUrl;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const bgImg = new (window as any).Image();
+    bgImg.crossOrigin = "anonymous";
+    bgImg.onload = () => {
+        // Set natural size in imageMeta
+        setNaturalSize(bgImg.width, bgImg.height);
+        canvas.width = bgImg.width;
+        canvas.height = bgImg.height;
+
+        ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+
+        textSets.forEach(textSet => {
+            ctx.save();
+
+            // Convert percent font size to px (relative to image height)
+            const fontSizePx = pctToPx('y', textSet.fontSizePct || 10);
+            ctx.font = `${textSet.fontWeight} ${fontSizePx}px ${textSet.fontFamily}`;
+            ctx.fillStyle = textSet.color;
+            ctx.globalAlpha = textSet.opacity;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.letterSpacing = `${textSet.letterSpacing}px`;
+
+            // Convert percent coordinates to px
+            const x = pctToPx('x', textSet.xPct || 0) + canvas.width / 2;
+            const y = canvas.height / 2 - pctToPx('y', textSet.yPct || 0);
+
+            ctx.translate(x, y);
+
+            // Apply 3D transforms
+            const tiltXRad = (-textSet.tiltX * Math.PI) / 180;
+            const tiltYRad = (-textSet.tiltY * Math.PI) / 180;
+            ctx.transform(
+                Math.cos(tiltYRad),
+                Math.sin(0),
+                -Math.sin(0),
+                Math.cos(tiltXRad),
+                0,
+                0
+            );
+            ctx.rotate((textSet.rotation * Math.PI) / 180);
+
+            if (textSet.letterSpacing === 0) {
+                ctx.fillText(textSet.text, 0, 0);
             } else {
-                triggerDownload();
+                const chars = textSet.text.split('');
+                let currentX = 0;
+                const totalWidth = chars.reduce((width, char, i) => {
+                    const charWidth = ctx.measureText(char).width;
+                    return width + charWidth + (i < chars.length - 1 ? textSet.letterSpacing : 0);
+                }, 0);
+                currentX = -totalWidth / 2;
+                chars.forEach((char, i) => {
+                    const charWidth = ctx.measureText(char).width;
+                    ctx.fillText(char, currentX + charWidth / 2, 0);
+                    currentX += charWidth + textSet.letterSpacing;
+                });
             }
-        };
-        bgImg.src = selectedImage || '';
-    
-        function triggerDownload() {
-            const dataUrl = canvas.toDataURL('image/png');
-            const link = document.createElement('a');
-            link.download = 'text-behind-image.png';
-            link.href = dataUrl;
-            link.click();
+            ctx.restore();
+        });
+
+        if (removedBgImageUrl) {
+            const removedBgImg = new (window as any).Image();
+            removedBgImg.crossOrigin = "anonymous";
+            removedBgImg.onload = () => {
+                ctx.drawImage(removedBgImg, 0, 0, canvas.width, canvas.height);
+                triggerDownload();
+            };
+            removedBgImg.src = removedBgImageUrl;
+        } else {
+            triggerDownload();
         }
     };
+    bgImg.src = selectedImage || '';
+
+    function triggerDownload() {
+        const dataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = 'text-behind-image.png';
+        link.href = dataUrl;
+        link.click();
+    }
+};
 
     useEffect(() => {
       if (user?.id) {
@@ -345,45 +342,58 @@ const Page = () => {
                                         )}
                                     </div>
                                 </div>
-                                <div className="min-h-[400px] w-[80%] p-4 border border-border rounded-lg relative overflow-hidden">
-                                    {isImageSetupDone ? (
-                                        <Image
-                                            src={selectedImage} 
-                                            alt="Uploaded"
-                                            layout="fill"
-                                            objectFit="contain" 
-                                            objectPosition="center" 
-                                        />
-                                    ) : (
-                                        <span className='flex items-center w-full gap-2'><ReloadIcon className='animate-spin' /> Loading, please wait</span>
-                                    )}
-                                    {isImageSetupDone && textSets.map(textSet => (
-                                        <div
-                                            key={textSet.id}
-                                            style={{
-                                                position: 'absolute',
-                                                top: `${50 - textSet.top}%`,
-                                                left: `${textSet.left + 50}%`,
-                                                transform: `
-                                                    translate(-50%, -50%) 
-                                                    rotate(${textSet.rotation}deg)
-                                                    perspective(1000px)
-                                                    rotateX(${textSet.tiltX}deg)
-                                                    rotateY(${textSet.tiltY}deg)
-                                                `,
-                                                color: textSet.color,
-                                                textAlign: 'center',
-                                                fontSize: `${textSet.fontSize}px`,
-                                                fontWeight: textSet.fontWeight,
-                                                fontFamily: textSet.fontFamily,
-                                                opacity: textSet.opacity,
-                                                letterSpacing: `${textSet.letterSpacing}px`,
-                                                transformStyle: 'preserve-3d'
-                                            }}
-                                        >
-                                            {textSet.text}
-                                        </div>
-                                    ))}
+                                <div
+    ref={previewRef}
+    className="min-h-[400px] w-[80%] p-4 border border-border rounded-lg relative overflow-hidden"
+>
+    {isImageSetupDone ? (
+        <Image
+            src={selectedImage}
+            alt="Uploaded"
+            layout="fill"
+            objectFit="contain"
+            objectPosition="center"
+            onLoadingComplete={img => {
+                setNaturalSize(img.naturalWidth, img.naturalHeight);
+            }}
+        />
+    ) : (
+        <span className='flex items-center w-full gap-2'><ReloadIcon className='animate-spin' /> Loading, please wait</span>
+    )}
+    {isImageSetupDone && textSets.map(textSet => {
+        const previewWidth = previewRef.current?.clientWidth || 1;
+        const previewHeight = previewRef.current?.clientHeight || 1;
+        const pxToPxPreview = (axis: 'x' | 'y', pct: number) => {
+            if (axis === 'x') return (pct / 100) * previewWidth;
+            if (axis === 'y') return (pct / 100) * previewHeight;
+            return 0;
+        };
+        const previewTop = `calc(50% - ${pxToPxPreview('y', textSet.yPct || 0)}px)`;
+        const previewLeft = `calc(50% + ${pxToPxPreview('x', textSet.xPct || 0)}px)`;
+        const previewFontSize = `${pxToPxPreview('y', textSet.fontSizePct || 10)}px`;
+        return (
+            <div
+                key={textSet.id}
+                style={{
+                    position: 'absolute',
+                    top: previewTop,
+                    left: previewLeft,
+                    transform: `translate(-50%, -50%) rotate(${textSet.rotation}deg) perspective(1000px) rotateX(${textSet.tiltX}deg) rotateY(${textSet.tiltY}deg)`,
+                    color: textSet.color,
+                    textAlign: 'center',
+                    fontSize: previewFontSize,
+                    fontWeight: textSet.fontWeight,
+                    fontFamily: textSet.fontFamily,
+                    opacity: textSet.opacity,
+                    letterSpacing: `${textSet.letterSpacing}px`,
+                    transformStyle: 'preserve-3d',
+                }}
+            >
+                {textSet.text}
+            </div>
+        );
+    })}
+
                                     {removedBgImageUrl && (
                                         <Image
                                             src={removedBgImageUrl}
