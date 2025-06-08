@@ -100,75 +100,147 @@ const SliderField: React.FC<SliderFieldProps> = ({
             </div>
           )}
         </div>
-        <Input
-          type="text"
-          value={currentValue}
-          onChange={handleSliderInputFieldChange}
-          className={`w-12 rounded-md border border-transparent px-2 py-0.5 text-center text-sm ${
-            disabled ? 'opacity-50 cursor-not-allowed' : 'text-muted-foreground hover:border-border hover:text-foreground hover:animate-pulse'
-          }`}
-          min={min}
-          max={max}
-          step={step}
-          disabled={disabled}
-        />
-      </div>
-      <div style={{ position: 'relative', width: '100%', overflow: 'visible', minHeight: 60 }}>
-        <input
-          ref={sliderRef}
-          id={attribute}
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={currentValue}
-          onChange={e => {
-            handleSliderInputFieldChange(e);
-            setShowBadge(true);
-            updateBadgePos();
+        <div
+          style={{
+            width: 54,
+            borderRadius: 4,
+            border: 'none',
+            padding: '4px 6px',
+            fontSize: 15,
+            fontWeight: 400,
+            outline: 'none',
+            textAlign: 'center',
+            background: 'transparent',
+            color: '#666',
+            userSelect: 'none',
+            pointerEvents: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
-          onInput={updateBadgePos}
-          onFocus={() => { setShowBadge(true); updateBadgePos(); }}
-          onBlur={() => setShowBadge(false)}
-          onMouseDown={() => { setShowBadge(true); updateBadgePos(); }}
-          onMouseUp={() => setShowBadge(false)}
-          onTouchStart={() => { setShowBadge(true); updateBadgePos(); }}
-          onTouchEnd={() => setShowBadge(false)}
-          aria-label={label}
-          disabled={disabled}
-          style={{ width: '100%', zIndex: 1, position: 'relative' }}
-        />
-        {showBadge && (
-          <div
+          aria-label={label + ' Value Display'}
+        >
+          {currentValue}
+        </div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', width: '100%', gap: 8, position: 'relative', minHeight: 60 }}>
+        <div style={{ flex: 1, position: 'relative' }}>
+          <input
+            ref={sliderRef}
+            id={attribute}
+            type="range"
+            min={min}
+            max={max}
+            step={step}
+            value={currentValue}
+            onChange={e => {
+              handleSliderInputFieldChange(e);
+              setShowBadge(true);
+              updateBadgePos();
+            }}
+            onInput={updateBadgePos}
+            onFocus={() => { setShowBadge(true); updateBadgePos(); }}
+            onBlur={() => setShowBadge(false)}
+            onMouseDown={() => { setShowBadge(true); updateBadgePos(); }}
+            onMouseUp={() => setShowBadge(false)}
+            onTouchStart={() => { setShowBadge(true); updateBadgePos(); }}
+            onTouchEnd={() => setShowBadge(false)}
+            aria-label={label}
+            disabled={disabled}
+            style={{ width: '100%', zIndex: 1, position: 'relative' }}
+          />
+          {showBadge && (
+            <div
+              style={{
+                position: 'absolute',
+                left: sliderRef.current
+                  ? `calc(${badgePos}px - 28px)`
+                  : '50%',
+                top: '-24px',
+                minWidth: '44px',
+                height: '36px',
+                background: '#222',
+                color: '#fff',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 700,
+                fontSize: '1rem',
+                pointerEvents: 'none',
+                zIndex: 9999,
+                boxShadow: '0 2px 12px rgba(0,0,0,0.18)',
+                border: '1px solid #fff',
+                padding: '0 10px',
+                transition: 'left 0.08s cubic-bezier(.4,1.6,.6,1)',
+                userSelect: 'none',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {currentValue}
+            </div>
+          )}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
+          <button
+            type="button"
+            aria-label={label + ' Decrement'}
+            disabled={disabled || currentValue <= min}
             style={{
-              position: 'absolute',
-              left: sliderRef.current
-                ? `calc(${badgePos}px - 28px)`
-                : '50%',
-              top: '-24px',
-              minWidth: '44px',
-              height: '36px',
-              background: '#222',
-              color: '#fff',
-              borderRadius: '8px',
+              width: 32,
+              height: 32,
+              borderRadius: 6,
+              border: '1px solid #e5e7eb',
+              background: '#f4f4f5',
+              color: '#222',
+              fontWeight: 700,
+              fontSize: 20,
+              cursor: disabled || currentValue <= min ? 'not-allowed' : 'pointer',
+              opacity: disabled || currentValue <= min ? 0.4 : 1,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: 700,
-              fontSize: '1rem',
-              pointerEvents: 'none',
-              zIndex: 9999,
-              boxShadow: '0 2px 12px rgba(0,0,0,0.18)',
-              border: '1px solid #fff',
-              padding: '0 10px',
-              transition: 'left 0.08s cubic-bezier(.4,1.6,.6,1)',
+              padding: 0,
               userSelect: 'none',
-              whiteSpace: 'nowrap',
+            }}
+            onClick={() => {
+              if (!disabled && currentValue > min) {
+                handleAttributeChange(attribute, Math.max(min, currentValue - step));
+              }
             }}
           >
-            {currentValue}
-          </div>
-        )}
+            –
+          </button>
+          <button
+            type="button"
+            aria-label={label + ' Increment'}
+            disabled={disabled || currentValue >= max}
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 6,
+              border: '1px solid #e5e7eb',
+              background: '#f4f4f5',
+              color: '#222',
+              fontWeight: 700,
+              fontSize: 20,
+              cursor: disabled || currentValue >= max ? 'not-allowed' : 'pointer',
+              opacity: disabled || currentValue >= max ? 0.4 : 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0,
+              userSelect: 'none',
+            }}
+            onClick={() => {
+              if (!disabled && currentValue < max) {
+                handleAttributeChange(attribute, Math.min(max, currentValue + step));
+              }
+            }}
+          >
+            +
+          </button>
+        </div>
       </div>
     </>
   );
