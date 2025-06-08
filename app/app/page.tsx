@@ -34,9 +34,45 @@ const Page = () => {
     const [currentUser, setCurrentUser] = useState<Profile>()
 
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [uploadedImageBase64, setUploadedImageBase64] = useState<string | null>(null);
     const [isImageSetupDone, setIsImageSetupDone] = useState<boolean>(false);
     const [removedBgImageUrl, setRemovedBgImageUrl] = useState<string | null>(null);
     const [textSets, setTextSets] = useState<Array<any>>([]);
+
+// Autosave draft to localStorage every 3 seconds
+useEffect(() => {
+  const id = setInterval(() => {
+    localStorage.setItem('draft', JSON.stringify({ textSets, selectedImage, uploadedImageBase64 }));
+  }, 3000);
+  return () => clearInterval(id);
+}, [textSets, selectedImage, uploadedImageBase64]);
+
+// On mount, prompt to restore draft if it exists
+useEffect(() => {
+  if (typeof window === 'undefined') return;
+  setTimeout(() => {
+    const draft = localStorage.getItem('draft');
+    if (draft) {
+      try {
+        const parsed = JSON.parse(draft);
+        if (parsed && Array.isArray(parsed.textSets) && parsed.textSets.length > 0) {
+          if (window.confirm('A saved draft was found. Restore it?')) {
+            setTextSets(parsed.textSets);
+            if (parsed.uploadedImageBase64) {
+              setSelectedImage(parsed.uploadedImageBase64);
+              setUploadedImageBase64(parsed.uploadedImageBase64);
+              setupImage(parsed.uploadedImageBase64);
+            } else if (parsed.selectedImage) {
+              setSelectedImage(parsed.selectedImage);
+              setupImage(parsed.selectedImage);
+            }
+          }
+        }
+      } catch {}
+    }
+  }, 0);
+}, []);
+
     const [isPayDialogOpen, setIsPayDialogOpen] = useState<boolean>(false); 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -77,7 +113,14 @@ const Page = () => {
         if (file) {
             const imageUrl = URL.createObjectURL(file);
             setSelectedImage(imageUrl);
-            await setupImage(imageUrl);
+            // Convert file to base64 for persistent restore
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const base64 = e.target?.result as string;
+                setUploadedImageBase64(base64);
+                await setupImage(base64);
+            };
+            reader.readAsDataURL(file);
         }
     };
 
@@ -112,7 +155,7 @@ const Page = () => {
             id: newId,
             text: 'Text',
             fontFamily: 'Inter',
-            xPct: 50,
+            xPct: 0,
             yPct: 50,
             color: 'white',
             fontSizePct: 10,
