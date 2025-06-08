@@ -392,9 +392,8 @@ useEffect(() => {
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1609710199882100" crossOrigin="anonymous"></script>
             {user && session && session.user && currentUser ? (
                 <div className='flex flex-col h-screen'>
-                    
                     <header className='flex flex-row items-center justify-between p-5 px-3 md:px-10'>
-                        <h2 className="text-4xl md:text-2xl font-semibold tracking-tight">
+                        <h2 className="text-xl md:text-xl font-semibold tracking-tight">
                             <span className="block md:hidden">Text Underlay</span>
                             <span className="hidden md:block">Text Underlay</span>
                         </h2>
@@ -468,37 +467,15 @@ useEffect(() => {
                     </header>
                     <Separator /> 
                     {selectedImage ? (
-                        <div className='flex flex-col md:flex-row items-start justify-start gap-10 w-full h-screen px-4 md:px-10 mt-2'>
-                            <div className="flex flex-col items-start justify-start w-full md:w-1/2 gap-4">
-                                <canvas ref={canvasRef} style={{ display: 'none' }} />
-                                <div className='flex items-center gap-2'>
-                                    <Button onClick={saveCompositeImage} className='md:hidden'>
-                                        Save image
-                                    </Button>
-                                    <div className='block md:hidden'>
-                                        {currentUser.paid ? (
-                                            <p className='text-sm'>
-
-                                            </p>
-                                        ) : (
-                                            <div className='flex items-center gap-5'>
-                                                <p className='text-sm'>
-                                                    {2 - (currentUser.images_generated)} generations left
-                                                </p>
-                                                <Button 
-                                                    variant="link" 
-                                                    className="p-0 h-auto text-sm text-primary hover:underline"
-                                                    onClick={() => setIsPayDialogOpen(true)}
-                                                >
-                                                    Upgrade
-                                                </Button>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
+                        <div className='flex-1 flex flex-col md:flex-row gap-4 md:gap-8 overflow-hidden w-full h-full px-2 md:px-8 py-2'>
+                            {/* Image Preview + Controls wrapper */}
+                            <div className='flex flex-1 flex-col md:flex-row gap-4 w-full h-full'>
+                           
+                    
+                             
                                 <div
     ref={previewRef}
-    className="min-h-[400px] w-[80%] p-4 border border-border rounded-lg relative overflow-hidden"
+    className="flex-grow flex items-center justify-center min-h-[343px] md:min-h-[520px] w-full max-w-[700px] md:max-w-[80vw] mx-auto bg-white border border-gray-200 shadow-lg rounded-lg relative overflow-hidden"
 >
     {isImageSetupDone ? (
         <Image
