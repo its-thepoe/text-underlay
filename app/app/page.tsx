@@ -38,6 +38,10 @@ const Page = () => {
     const [isImageSetupDone, setIsImageSetupDone] = useState<boolean>(false);
     const [removedBgImageUrl, setRemovedBgImageUrl] = useState<string | null>(null);
     const [textSets, setTextSets] = useState<Array<any>>([]);
+const [pastTextSets, setPastTextSets] = useState<Array<any>[]>([]);
+const [futureTextSets, setFutureTextSets] = useState<Array<any>[]>([]);
+const [ariaAnnouncement, setAriaAnnouncement] = useState<string>('');
+const isUndoRedoRef = useRef(false);
 
 // Autosave draft to localStorage every 3 seconds
 useEffect(() => {
@@ -164,6 +168,12 @@ useEffect(() => {
     };
 
     const addNewTextSet = () => {
+        if (!isUndoRedoRef.current) {
+            setPastTextSets(past => [...past, textSets]);
+            setFutureTextSets([]);
+        } else {
+            isUndoRedoRef.current = false;
+        }
         const newId = Math.max(...textSets.map(set => set.id), 0) + 1;
         setTextSets(prev => [...prev, {
             id: newId,
@@ -185,17 +195,35 @@ useEffect(() => {
     };
 
     const handleAttributeChange = (id: number, attribute: string, value: any) => {
+        if (!isUndoRedoRef.current) {
+            setPastTextSets(past => [...past, textSets]);
+            setFutureTextSets([]);
+        } else {
+            isUndoRedoRef.current = false;
+        }
         setTextSets(prev => prev.map(set => 
             set.id === id ? { ...set, [attribute]: value } : set
         ));
     };
 
     const duplicateTextSet = (textSet: any) => {
+        if (!isUndoRedoRef.current) {
+            setPastTextSets(past => [...past, textSets]);
+            setFutureTextSets([]);
+        } else {
+            isUndoRedoRef.current = false;
+        }
         const newId = Math.max(...textSets.map(set => set.id), 0) + 1;
         setTextSets(prev => [...prev, { ...textSet, id: newId }]);
     };
 
     const removeTextSet = (id: number) => {
+        if (!isUndoRedoRef.current) {
+            setPastTextSets(past => [...past, textSets]);
+            setFutureTextSets([]);
+        } else {
+            isUndoRedoRef.current = false;
+        }
         setTextSets(prev => prev.filter(set => set.id !== id));
     };
 
@@ -300,18 +328,83 @@ useEffect(() => {
       }
     }, [user])
     
+    // Undo/Redo keyboard handlers
+    useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+        const ctrl = isMac ? e.metaKey : e.ctrlKey;
+        if (ctrl && e.key.toLowerCase() === 'z' && !e.shiftKey) {
+          // Undo
+          if (pastTextSets.length > 0) {
+            setFutureTextSets(future => [textSets, ...future]);
+            setTextSets(pastTextSets[pastTextSets.length - 1]);
+            setPastTextSets(past => past.slice(0, -1));
+            setAriaAnnouncement('Undo');
+          }
+          e.preventDefault();
+        } else if (ctrl && (e.key.toLowerCase() === 'y' || (e.key.toLowerCase() === 'z' && e.shiftKey))) {
+          // Redo
+          if (futureTextSets.length > 0) {
+            setPastTextSets(past => [...past, textSets]);
+            setTextSets(futureTextSets[0]);
+            setFutureTextSets(future => future.slice(1));
+            setAriaAnnouncement('Redo');
+          }
+          e.preventDefault();
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [pastTextSets, futureTextSets, textSets]);
+
+    // Undo/Redo UI button handlers
+    const handleUndo = () => {
+      if (pastTextSets.length > 0) {
+        isUndoRedoRef.current = true;
+        setFutureTextSets(future => [textSets, ...future]);
+        setTextSets(pastTextSets[pastTextSets.length - 1]);
+        setPastTextSets(past => past.slice(0, -1));
+        setAriaAnnouncement('Undo');
+      }
+    };
+    const handleRedo = () => {
+      if (futureTextSets.length > 0) {
+        isUndoRedoRef.current = true;
+        setPastTextSets(past => [...past, textSets]);
+        setTextSets(futureTextSets[0]);
+        setFutureTextSets(future => future.slice(1));
+        setAriaAnnouncement('Redo');
+      }
+    };
+
+    // Only push undo checkpoint if textSets differs from last stack entry
+    const pushUndoCheckpoint = () => {
+      const last = pastTextSets[pastTextSets.length - 1];
+      if (!last || JSON.stringify(last) !== JSON.stringify(textSets)) {
+        setPastTextSets(past => [...past, textSets]);
+        setFutureTextSets([]);
+      }
+    };
+
     return (
         <>
+            <div aria-live="polite" style={{position:'absolute',left:'-9999px',height:0,width:0,overflow:'hidden'}}>{ariaAnnouncement}</div>
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1609710199882100" crossOrigin="anonymous"></script>
             {user && session && session.user && currentUser ? (
                 <div className='flex flex-col h-screen'>
                     
-                    <header className='flex flex-row items-center justify-between p-5 px-10'>
+                    <header className='flex flex-row items-center justify-between p-5 px-3 md:px-10'>
                         <h2 className="text-4xl md:text-2xl font-semibold tracking-tight">
                             <span className="block md:hidden">Text Underlay</span>
-                            <span className="hidden md:block">Text Underlay Editor</span>
+                            <span className="hidden md:block">Text Underlay</span>
                         </h2>
-                        <div className='flex gap-4 items-center'>
+                        <div className='flex flex-row items-center gap-2'>
+                            <Button variant='outline' size='icon' onClick={handleUndo} aria-label="Undo" disabled={pastTextSets.length === 0}>
+                                <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h7a4 4 0 1 1 0 8h-1"/></svg>
+                            </Button>
+                            <Button variant='outline' size='icon' onClick={handleRedo} aria-label="Redo" disabled={futureTextSets.length === 0}>
+                                <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9h-7a4 4 0 1 0 0 8h1"/></svg>
+                            </Button>
                             <input
                                 type="file"
                                 ref={fileInputRef}
@@ -323,7 +416,6 @@ useEffect(() => {
                                 <div className='hidden md:block font-semibold'>
                                     {currentUser.paid ? (
                                         <p className='text-sm'>
-                                            Unlimited generations
                                         </p>
                                     ) : (
                                         <div className='flex items-center gap-2'>
@@ -386,7 +478,7 @@ useEffect(() => {
                                     <div className='block md:hidden'>
                                         {currentUser.paid ? (
                                             <p className='text-sm'>
-                                                Unlimited generations
+
                                             </p>
                                         ) : (
                                             <div className='flex items-center gap-5'>
@@ -481,6 +573,7 @@ useEffect(() => {
                                                 removeTextSet={removeTextSet}
                                                 duplicateTextSet={duplicateTextSet}
                                                 userId={currentUser.id}
+                                                pushUndoCheckpoint={pushUndoCheckpoint}
                                             />
                                         ))}
                                     </Accordion>

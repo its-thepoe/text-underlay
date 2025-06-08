@@ -35,9 +35,10 @@ interface TextCustomizerProps {
     removeTextSet: (id: number) => void;
     duplicateTextSet: (textSet: any) => void;
     userId: string;
+    pushUndoCheckpoint?: (id: number) => void;
 }
 
-const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttributeChange, removeTextSet, duplicateTextSet, userId }) => {
+const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttributeChange, removeTextSet, duplicateTextSet, userId, pushUndoCheckpoint = () => {} }) => {
     const [activeControl, setActiveControl] = useState<string | null>(null);
     const [isPaidUser, setIsPaidUser] = useState(false);
     const supabaseClient = useSupabaseClient();
@@ -144,6 +145,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                                     step={1}
                                     currentValue={textSet.xPct}
                                     handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                                    pushUndoCheckpoint={() => pushUndoCheckpoint(textSet.id)}
                                 />
                                 <SliderField
                                     attribute="yPct"
@@ -153,6 +155,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                                     step={1}
                                     currentValue={textSet.yPct}
                                     handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                                    pushUndoCheckpoint={() => pushUndoCheckpoint(textSet.id)}
                                 />
                             </div>
                         )}
@@ -166,6 +169,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                                 step={1}
                                 currentValue={textSet.fontSizePct}
                                 handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                                pushUndoCheckpoint={() => pushUndoCheckpoint(textSet.id)}
                             />
                         )}
 
@@ -178,6 +182,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                                 step={100}
                                 currentValue={textSet.fontWeight}
                                 handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
+                                pushUndoCheckpoint={() => pushUndoCheckpoint(textSet.id)}
                             />
                         )}
                         

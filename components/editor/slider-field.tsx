@@ -54,6 +54,7 @@ interface SliderFieldProps {
   disabled?: boolean;
   premiumFeature?: boolean;
   handleAttributeChange: (attribute: string, value: number) => void;
+  pushUndoCheckpoint?: () => void;
 }
 
 const SliderField: React.FC<SliderFieldProps> = ({
@@ -66,7 +67,8 @@ const SliderField: React.FC<SliderFieldProps> = ({
   hasTopPadding = true,
   disabled = false,
   premiumFeature = false,
-  handleAttributeChange
+  handleAttributeChange,
+  pushUndoCheckpoint = () => {}
 }) => {
   const [showBadge, setShowBadge] = useState(false);
   const [badgePos, setBadgePos] = useState(0);
@@ -140,11 +142,20 @@ const SliderField: React.FC<SliderFieldProps> = ({
             }}
             onInput={updateBadgePos}
             onFocus={() => { setShowBadge(true); updateBadgePos(); }}
-            onBlur={() => setShowBadge(false)}
+            onBlur={e => {
+              setShowBadge(false);
+              if (pushUndoCheckpoint) pushUndoCheckpoint();
+            }}
             onMouseDown={() => { setShowBadge(true); updateBadgePos(); }}
-            onMouseUp={() => setShowBadge(false)}
+            onMouseUp={e => {
+              setShowBadge(false);
+              if (pushUndoCheckpoint) pushUndoCheckpoint();
+            }}
             onTouchStart={() => { setShowBadge(true); updateBadgePos(); }}
-            onTouchEnd={() => setShowBadge(false)}
+            onTouchEnd={e => {
+              setShowBadge(false);
+              if (pushUndoCheckpoint) pushUndoCheckpoint();
+            }}
             aria-label={label}
             disabled={disabled}
             style={{ width: '100%', zIndex: 1, position: 'relative' }}
