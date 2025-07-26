@@ -3,7 +3,7 @@
 import React, { useRef, useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { LockIcon } from 'lucide-react';
+import { Lock } from 'iconsax-react';
 
 // Accessible slider thumb size
 const sliderStyles = `
@@ -97,7 +97,7 @@ const SliderField: React.FC<SliderFieldProps> = ({
           <Label htmlFor={attribute}>{label}</Label>
           {premiumFeature && (
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <LockIcon size={12} />
+              <Lock size="16" />
               <span>Pro</span>
             </div>
           )}

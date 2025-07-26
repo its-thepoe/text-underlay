@@ -10,7 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { Move, Text, Bold, RotateCw, Palette, LightbulbIcon, CaseSensitive, TypeOutline, ArrowLeftRight, ArrowUpDown, AlignHorizontalSpaceAround, LockIcon } from 'lucide-react';
+import { Text, TextBold, RotateRight, Brush, Lamp, ArrowSwapHorizontal, Lock } from 'iconsax-react';
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 interface TextCustomizerProps {
@@ -63,17 +63,17 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
     }, [userId, supabaseClient]);
 
     const controls = [
-        { id: 'text', icon: <CaseSensitive size={20} />, label: 'Text' },
-        { id: 'fontFamily', icon: <TypeOutline size={20} />, label: 'Font' },
-        { id: 'color', icon: <Palette size={20} />, label: 'Color' },
-        { id: 'position', icon: <Move size={20} />, label: 'Position' },
+        { id: 'text', icon: <Text size={20} />, label: 'Text' },
+        { id: 'fontFamily', icon: <Text size={20} />, label: 'Font' },
+        { id: 'color', icon: <Brush size={20} />, label: 'Color' },
+        { id: 'position', icon: <ArrowSwapHorizontal size={20} />, label: 'Position' },
         { id: 'fontSize', icon: <Text size={20} />, label: 'Size' },
-        { id: 'fontWeight', icon: <Bold size={20} />, label: 'Weight' },
-        { id: 'letterSpacing', icon: <AlignHorizontalSpaceAround size={20} />, label: 'Letter spacing', premium: true },
-        { id: 'opacity', icon: <LightbulbIcon size={20} />, label: 'Opacity' },
-        { id: 'rotation', icon: <RotateCw size={20} />, label: 'Rotate' },
-        { id: 'tiltX', icon: <ArrowLeftRight size={20} />, label: 'Tilt X (3D effect)', premium: true },
-        { id: 'tiltY', icon: <ArrowUpDown size={20} />, label: 'Tilt Y (3D effect)', premium: true },
+        { id: 'fontWeight', icon: <TextBold size={20} />, label: 'Weight' },
+        { id: 'letterSpacing', icon: <ArrowSwapHorizontal size={20} />, label: 'Letter spacing', premium: true },
+        { id: 'opacity', icon: <Lamp size={20} />, label: 'Opacity' },
+        { id: 'rotation', icon: <RotateRight size={20} />, label: 'Rotate' },
+        { id: 'tiltX', icon: <ArrowSwapHorizontal size={20} />, label: 'Tilt X (3D effect)', premium: true },
+        { id: 'tiltY', icon: <ArrowSwapHorizontal size={20} />, label: 'Tilt Y (3D effect)', premium: true },
     ];  
 
     const handlePremiumAttributeChange = (attribute: string, value: any) => {
@@ -98,9 +98,9 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                                   tab === 'text' ? 'Text' : tab === 'position' ? 'Position' : 'Effects & Styling'
                                 }
                             >
-                                {tab === 'text' && <TypeOutline size={22} />}
-                                {tab === 'position' && <Move size={22} />}
-                                {tab === 'effects' && <Palette size={22} />}
+                                {tab === 'text' && <Text size={22} />}
+                                {tab === 'position' && <ArrowSwapHorizontal size={22} />}
+                                {tab === 'effects' && <Brush size={22} />}
                             </button>
                         ))}
                     </div>

@@ -2,10 +2,178 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import createGlobe from "cobe";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { IconBrandYoutubeFilled } from "@tabler/icons-react";
 import Link from "next/link";
+import { ArrowRight, Export } from "iconsax-react";
+import { Button } from "./button";
+import { ReactTyped } from "react-typed";
+
+// Hero Section with TypeWriter effect and animated border
+const HeroSection = () => {
+  return (
+    <div className="relative w-full">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative">
+          <ShineBorder>
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-950 px-6 py-10 sm:px-10 sm:py-16 md:px-12 lg:px-20">
+              <BackgroundCanvas />
+              
+              <div className="relative flex flex-col gap-4 items-start">
+                <div className="inline-flex items-center rounded-full bg-neutral-100 px-3 py-1 text-sm dark:bg-neutral-800">
+                  <span className="font-medium text-neutral-600 dark:text-neutral-400">
+                    New features available
+                  </span>
+                </div>
+                
+                <h1 className="text-3xl font-bold tracking-tight text-neutral-800 dark:text-neutral-100 sm:text-4xl md:text-5xl lg:text-6xl">
+                  Text Behind <br />
+                  <span className="text-blue-600 dark:text-blue-500">
+                    <TypeWriter />
+                  </span>
+                </h1>
+                
+                <p className="mt-2 text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl">
+                  Create stunning text overlays for your images with our AI-powered platform. 
+                  Perfect for social media, marketing materials, and more.
+                </p>
+                
+                <div className="mt-6 flex flex-wrap gap-4">
+                  <Button className="group gap-2">
+                    Get started
+                    <ArrowRight size="16" className="transition-transform group-hover:translate-x-1" />
+                  </Button>
+                  
+                  <Button variant="outline" className="group gap-2">
+                    Learn more
+                    <Export size="16" className="transition-transform group-hover:scale-110" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </ShineBorder>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// TypeWriter component for animated text
+const TypeWriter = () => {
+  return (
+    <ReactTyped
+      strings={[
+        'Images',
+        'Photos',
+        'Designs',
+        'Artwork',
+        'Creations'
+      ]}
+      typeSpeed={80}
+      backSpeed={50}
+      loop
+    />
+  );
+};
+
+// Animated border effect
+const ShineBorder = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="relative rounded-2xl p-[1px] overflow-hidden">
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-border-shine" />
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-neutral-950/50 to-neutral-950/50 backdrop-blur-xl" />
+      {children}
+    </div>
+  );
+};
+
+// Canvas background effect
+const BackgroundCanvas = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    const resizeCanvas = () => {
+      const { width, height } = canvas.getBoundingClientRect();
+      canvas.width = width;
+      canvas.height = height;
+    };
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    const particles: Array<{
+      x: number;
+      y: number;
+      radius: number;
+      color: string;
+      velocity: { x: number; y: number };
+    }> = [];
+    
+    const createParticles = () => {
+      const particleCount = 50;
+      const colors = ['#3b82f6', '#8b5cf6', '#ec4899'];
+      
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 2 + 1,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          velocity: {
+            x: (Math.random() - 0.5) * 0.5,
+            y: (Math.random() - 0.5) * 0.5
+          }
+        });
+      }
+    };
+    
+    createParticles();
+    
+    const animate = () => {
+      requestAnimationFrame(animate);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      particles.forEach(particle => {
+        particle.x += particle.velocity.x;
+        particle.y += particle.velocity.y;
+        
+        if (particle.x < 0 || particle.x > canvas.width) {
+          particle.velocity.x = -particle.velocity.x;
+        }
+        
+        if (particle.y < 0 || particle.y > canvas.height) {
+          particle.velocity.y = -particle.velocity.y;
+        }
+        
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        ctx.fillStyle = particle.color;
+        ctx.globalAlpha = 0.2;
+        ctx.fill();
+      });
+    };
+    
+    animate();
+    
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+    };
+  }, []);
+  
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+    />
+  );
+};
 
 export function BentoGrid() {
   const features = [
@@ -40,15 +208,20 @@ export function BentoGrid() {
       className: "col-span-1 lg:col-span-3 border-b lg:border-none",
     },
   ];
+  
   return (
-    <div className="relative z-20 py-10 lg:py-40 max-w-7xl mx-auto">
-      <div className="relative ">
-        <div className="grid grid-cols-1 lg:grid-cols-6 mt-12 xl:border rounded-md dark:border-neutral-800">
+    <div className="relative z-20 py-10 lg:py-20 max-w-7xl mx-auto">
+      {/* Hero Section */}
+      <HeroSection />
+      
+      {/* Features Grid */}
+      <div className="relative mt-20">
+        <div className="grid grid-cols-1 lg:grid-cols-6 xl:border rounded-md dark:border-neutral-800">
           {features.map((feature) => (
             <FeatureCard key={feature.title} className={feature.className}>
               <FeatureTitle>{feature.title}</FeatureTitle>
               <FeatureDescription>{feature.description}</FeatureDescription>
-              <div className=" h-full w-full">{feature.skeleton}</div>
+              <div className="h-full w-full">{feature.skeleton}</div>
             </FeatureCard>
           ))}
         </div>

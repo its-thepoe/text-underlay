@@ -18,6 +18,7 @@ import { ModeToggle } from '@/components/mode-toggle';
 import { Profile } from '@/types';
 import LoginButton from '@/components/login-button';
 import TextCustomizer from '@/components/editor/text-customizer';
+import { Sidebar } from '@/components/ui/sidebar';
 
 import { PlusIcon, ReloadIcon } from '@radix-ui/react-icons';
 
@@ -390,110 +391,40 @@ const Page = () => {
       }
     };
 
-    return ( 
+        return (
         <>
             <div aria-live="polite" style={{position:'absolute',left:'-9999px',height:0,width:0,overflow:'hidden'}}>{ariaAnnouncement}</div>
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1609710199882100" crossOrigin="anonymous"></script>
-                <div className='flex flex-col h-screen'>
-                    <header className='flex flex-row items-center justify-between p-5 px-3 md:px-10'>
-                        <h2 className="text-xl md:text-xl font-semibold tracking-tight">
-                            <span className="block md:hidden">Text Underlay</span>
-                            <span className="hidden md:block">Text Underlay</span>
-                        </h2>
-                        <div className='flex flex-row items-center gap-2'>
-                            {user && session && session.user && currentUser ? (
-                                <>
-                                    <Button variant='outline' size='icon' onClick={handleUndo} aria-label="Undo" disabled={pastTextSets.length === 0}>
-                                        <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h7a4 4 0 1 1 0 8h-1"/></svg>
-                                    </Button>
-                                    <Button variant='outline' size='icon' onClick={handleRedo} aria-label="Redo" disabled={futureTextSets.length === 0}>
-                                        <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9h-7a4 4 0 1 0 0 8h1"/></svg>
-                                    </Button>
-                                    <input
-                                        type="file"
-                                        ref={fileInputRef}
-                                        style={{ display: 'none' }}
-                                        onChange={handleFileChange}
-                                        accept=".jpg, .jpeg, .png"
-                                    />
-                                    <div className='flex items-center gap-5'>
-                                        <div className='hidden md:block font-semibold'>
-                                            {currentUser.paid ? (
-                                                <p className='text-sm'>
-                                                </p>
-                                            ) : (
-                                                <div className='flex items-center gap-2'>
-                                                    <p className='text-sm'>
-                                                        {2 - (currentUser.images_generated)} generations left
-                                                    </p>
-                                                    <Button 
-                                                        variant="link" 
-                                                        className="p-0 h-auto text-sm text-primary hover:underline"
-                                                        onClick={() => setIsPayDialogOpen(true)}
-                                                    >
-                                                        Upgrade
-                                                    </Button>
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className='flex gap-2'>
-                                            <Button
-                                                onClick={handleUploadImage}
-                                                variant="secondary"
-                                            >
-                                                Upload image
-                                            </Button>
-                                            {selectedImage && (
-                                                <Button onClick={saveCompositeImage} className='hidden md:flex'>
-                                                    Save image
-                                                </Button>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Avatar className="cursor-pointer">
-                                                <AvatarImage src={currentUser?.avatar_url} /> 
-                                                <AvatarFallback>{currentUser?.full_name?.[0]?.toUpperCase() ?? "?"}</AvatarFallback>
-                                            </Avatar>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent className="w-56" align="end">
-                                            <DropdownMenuLabel>
-                                                <div className="flex flex-col space-y-1">
-                                                    <p className="text-sm font-medium leading-none">{currentUser?.full_name}</p>
-                                                    <p className="text-xs font-normal leading-none text-muted-foreground">{user?.user_metadata.email}</p>
-                                                </div>
-                                            </DropdownMenuLabel>
-                                            <DropdownMenuSeparator />
-                                            <DropdownMenuItem onClick={() => setIsPayDialogOpen(true)}>
-                                                <button>{currentUser?.paid ? 'View Plan' : 'Upgrade to Pro'}</button>
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </>
-                                                            ) : (
-                                    <div className='flex items-center gap-2'>
-                                        <Button
-                                            onClick={() => setIsPayDialogOpen(true)}
-                                            variant="outline"
-                                            className="hidden md:flex"
-                                        >
-                                            Upgrade
-                                        </Button>
-                                        <LoginButton />
-                                    </div>
-                                )}
-                            <ModeToggle />
-                        </div>
-                    </header>
-                                        <Separator /> 
-                    {selectedImage ? (
-                        <div className='flex-1 flex flex-col md:flex-row gap-4 md:gap-8 overflow-hidden w-full h-full px-2 md:px-8 py-2'>
-                            {/* Image Preview + Controls wrapper */}
-                            <div className='flex flex-1 flex-col md:flex-row gap-4 w-full h-full'>
-                             
-                                {/* Controls Section */}
-                                <div className='w-full md:w-[420px] max-w-full flex flex-col overflow-y-auto h-full pr-1 md:hidden'>
+            
+            <div className='flex h-screen'>
+                <Sidebar
+                    onUploadImage={handleUploadImage}
+                    onSaveImage={saveCompositeImage}
+                    onUndo={handleUndo}
+                    onRedo={handleRedo}
+                    canUndo={pastTextSets.length > 0}
+                    canRedo={futureTextSets.length > 0}
+                    hasImage={!!selectedImage}
+                    user={user}
+                    currentUser={currentUser}
+                    onPayDialogOpen={() => setIsPayDialogOpen(true)}
+                />
+                
+                <div className='flex flex-col flex-1 h-screen'>
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    onChange={handleFileChange}
+                    accept=".jpg, .jpeg, .png"
+                /> 
+                    <div className='flex-1 flex flex-col md:flex-row gap-4 md:gap-8 overflow-hidden w-full h-full px-2 md:px-8 py-2'>
+                        {/* Image Preview + Controls wrapper */}
+                        <div className='flex flex-1 flex-col md:flex-row gap-4 w-full h-full'>
+                         
+                            {/* Controls Section */}
+                            <div className='w-full md:w-[420px] max-w-full flex flex-col overflow-y-auto h-full pr-1 md:hidden'>
+                                {selectedImage && (
                                     <button
                                         onClick={saveCompositeImage}
                                         className="fixed z-50 md:hidden bottom-4 right-4 w-12 h-12 rounded-full bg-black text-white flex items-center justify-center shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary border border-gray-200 dark:bg-neutral-800 dark:border-gray-500 dark:shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
@@ -506,129 +437,136 @@ const Page = () => {
                                             <path d="M19 12l-7 7-7-7" />
                                         </svg>
                                     </button>
-                                    <div className='block md:hidden'>
-                                        {user && currentUser?.paid ? (
+                                )}
+                                <div className='block md:hidden'>
+                                    {user && currentUser?.paid ? (
+                                        <p className='text-sm'>
+
+                                        </p>
+                                    ) : (
+                                        <div className='flex items-center gap-5'>
                                             <p className='text-sm'>
-
+                                                {user && currentUser ? `${2 - (currentUser.images_generated)} generations left` : 'Login to start creating'}
                                             </p>
-                                        ) : (
-                                            <div className='flex items-center gap-5'>
-                                                <p className='text-sm'>
-                                                    {user && currentUser ? `${2 - (currentUser.images_generated)} generations left` : 'Login to start creating'}
-                                                </p>
-                                                <Button 
-                                                    variant="link" 
-                                                    className="p-0 h-auto text-sm text-primary hover:underline"
-                                                    onClick={() => setIsPayDialogOpen(true)}
-                                                >
-                                                    Upgrade
-                                                </Button>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                                <div
-    ref={previewRef}
-    className="min-h-[400px] w-full p-4 border border-border rounded-lg relative overflow-hidden"
->
-    {isImageSetupDone ? (
-        <Image
-            src={selectedImage}
-            alt="Uploaded"
-            layout="fill"
-            objectFit="contain"
-            objectPosition="center"
-            onLoadingComplete={img => {
-                setNaturalSize(img.naturalWidth, img.naturalHeight);
-            }}
-        />
-    ) : (
-        <span className='flex items-center w-full gap-2'><ReloadIcon className='animate-spin' /> Loading, please wait</span>
-    )}
-    {isImageSetupDone && textSets.map(textSet => {
-        const previewWidth = previewRef.current?.clientWidth || 1;
-        const previewHeight = previewRef.current?.clientHeight || 1;
-        const pxToPxPreview = (axis: 'x' | 'y', pct: number) => {
-            if (axis === 'x') return (pct / 100) * previewWidth;
-            if (axis === 'y') return (pct / 100) * previewHeight;
-            return 0;
-        };
-        const previewTop = `calc(50% - ${pxToPxPreview('y', textSet.yPct || 0)}px)`;
-        const previewLeft = `calc(50% + ${pxToPxPreview('x', textSet.xPct || 0)}px)`;
-        const previewFontSize = `${pxToPxPreview('y', textSet.fontSizePct || 10)}px`;
-        return (
-            <div
-                key={textSet.id}
-                style={{
-                    position: 'absolute',
-                    top: previewTop,
-                    left: previewLeft,
-                    transform: `translate(-50%, -50%) rotate(${textSet.rotation}deg) perspective(1000px) rotateX(${textSet.tiltX}deg) rotateY(${textSet.tiltY}deg)`,
-                    color: textSet.color,
-                    textAlign: 'center',
-                    fontSize: previewFontSize,
-                    fontWeight: textSet.fontWeight,
-                    fontFamily: textSet.fontFamily,
-                    opacity: textSet.opacity,
-                    letterSpacing: `${textSet.letterSpacing}px`,
-                    transformStyle: 'preserve-3d',
-                }}
-            >
-                {textSet.text}
-            </div>
-        );
-    })}
-
-                                    {removedBgImageUrl && (
-                                        <Image
-                                            src={removedBgImageUrl}
-                                            alt="Removed bg"
-                                            layout="fill"
-                                            objectFit="contain" 
-                                            objectPosition="center" 
-                                            className="absolute top-0 left-0 w-full h-full"
-                                        /> 
+                                            <Button 
+                                                variant="link" 
+                                                className="p-0 h-auto text-sm text-primary hover:underline"
+                                                onClick={() => setIsPayDialogOpen(true)}
+                                            >
+                                                Upgrade
+                                            </Button>
+                                        </div>
                                     )}
                                 </div>
-    
                             </div>
-                            <div className='flex flex-col w-full md:w-1/2'>
-                                <Button variant="secondary" onClick={addNewTextSet}><PlusIcon className='mr-2'/> Add New Text Set</Button>
-                                <ScrollArea className="h-[calc(100vh-10rem)] p-2">
-                                    <Accordion type="single" collapsible className="w-full mt-2">
-                                        {textSets.map(textSet => (
-                                            <TextCustomizer 
-                                                key={textSet.id}
-                                                textSet={textSet}
-                                                handleAttributeChange={handleAttributeChange}
-                                                removeTextSet={removeTextSet}
-                                                duplicateTextSet={duplicateTextSet}
-                                                userId={user && currentUser?.id ? currentUser.id : 'anonymous'}
-                                                pushUndoCheckpoint={pushUndoCheckpoint}
-                                            />
-                                        ))}
-                                    </Accordion>
-                                </ScrollArea>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className='flex items-center justify-center min-h-screen w-full'>
-                            <div className='text-center space-y-4'>
-                                <h2 className="text-xl font-semibold">Welcome to Text Underlay!</h2>
-                                <p className="text-muted-foreground">Upload an image to get started creating stunning text-underlay designs.</p>
-                                {!user && (
-                                    <div className='flex flex-col items-center gap-2'>
-                                        <p className="text-sm text-muted-foreground">Login to save your work and access premium features</p>
-                                        <LoginButton />
+                            <div
+                                ref={previewRef}
+                                className="min-h-[400px] w-full p-4 border border-border rounded-lg relative overflow-hidden"
+                            >
+                                {selectedImage ? (
+                                    isImageSetupDone ? (
+                                        <Image
+                                            src={selectedImage}
+                                            alt="Uploaded"
+                                            layout="fill"
+                                            objectFit="contain"
+                                            objectPosition="center"
+                                            onLoadingComplete={img => {
+                                                setNaturalSize(img.naturalWidth, img.naturalHeight);
+                                            }}
+                                        />
+                                    ) : (
+                                        <span className='flex items-center w-full gap-2'><ReloadIcon className='animate-spin' /> Loading, please wait</span>
+                                    )
+                                ) : (
+                                    <div className='flex items-center justify-center h-full'>
+                                        <div className='text-center space-y-4'>
+                                            <h2 className="text-xl font-semibold">Welcome to Text Underlay!</h2>
+                                            <p className="text-muted-foreground">Upload an image to get started creating stunning text-underlay designs.</p>
+                                            {!user && (
+                                                <div className='flex flex-col items-center gap-2'>
+                                                    <p className="text-sm text-muted-foreground">Login to save your work and access premium features</p>
+                                                    <LoginButton />
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 )}
+                                {isImageSetupDone && textSets.map(textSet => {
+                                    const previewWidth = previewRef.current?.clientWidth || 1;
+                                    const previewHeight = previewRef.current?.clientHeight || 1;
+                                    const pxToPxPreview = (axis: 'x' | 'y', pct: number) => {
+                                        if (axis === 'x') return (pct / 100) * previewWidth;
+                                        if (axis === 'y') return (pct / 100) * previewHeight;
+                                        return 0;
+                                    };
+                                    const previewTop = `calc(50% - ${pxToPxPreview('y', textSet.yPct || 0)}px)`;
+                                    const previewLeft = `calc(50% + ${pxToPxPreview('x', textSet.xPct || 0)}px)`;
+                                    const previewFontSize = `${pxToPxPreview('y', textSet.fontSizePct || 10)}px`;
+                                    return (
+                                        <div
+                                            key={textSet.id}
+                                            style={{
+                                                position: 'absolute',
+                                                top: previewTop,
+                                                left: previewLeft,
+                                                transform: `translate(-50%, -50%) rotate(${textSet.rotation}deg) perspective(1000px) rotateX(${textSet.tiltX}deg) rotateY(${textSet.tiltY}deg)`,
+                                                color: textSet.color,
+                                                textAlign: 'center',
+                                                fontSize: previewFontSize,
+                                                fontWeight: textSet.fontWeight,
+                                                fontFamily: textSet.fontFamily,
+                                                opacity: textSet.opacity,
+                                                letterSpacing: `${textSet.letterSpacing}px`,
+                                                transformStyle: 'preserve-3d',
+                                                userSelect: 'text', // Make text selectable
+                                                cursor: 'text', // Change cursor to text selection cursor
+                                                pointerEvents: 'auto', // Enable pointer events on text
+                                                zIndex: 10, // Ensure text is above the image
+                                            }}
+                                        >
+                                            {textSet.text}
+                                        </div>
+                                    );
+                                })}
+
+                                {removedBgImageUrl && (
+                                    <Image
+                                        src={removedBgImageUrl}
+                                        alt="Removed bg"
+                                        layout="fill"
+                                        objectFit="contain" 
+                                        objectPosition="center" 
+                                        className="absolute top-0 left-0 w-full h-full"
+                                    /> 
+                                )}
                             </div>
+        
                         </div>
-                    )} 
-                    {user && currentUser && (
+                        <div className='flex flex-col w-full md:w-1/2'>
+                            <Button variant="secondary" onClick={addNewTextSet}><PlusIcon className='mr-2'/> Add New Text Set</Button>
+                            <ScrollArea className="h-[calc(100vh-10rem)] p-2">
+                                <Accordion type="single" collapsible className="w-full mt-2">
+                                    {textSets.map(textSet => (
+                                        <TextCustomizer 
+                                            key={textSet.id}
+                                            textSet={textSet}
+                                            handleAttributeChange={handleAttributeChange}
+                                            removeTextSet={removeTextSet}
+                                            duplicateTextSet={duplicateTextSet}
+                                            userId={user && currentUser?.id ? currentUser.id : 'anonymous'}
+                                            pushUndoCheckpoint={pushUndoCheckpoint}
+                                        />
+                                    ))}
+                                </Accordion>
+                            </ScrollArea>
+                        </div>
+                    </div> 
+                                        {user && currentUser && (
                         <PayDialog userDetails={currentUser as any} userEmail={user.user_metadata.email} isOpen={isPayDialogOpen} onClose={() => setIsPayDialogOpen(false)} />
                     )}
                 </div>
+            </div>
         </>
     );
 }

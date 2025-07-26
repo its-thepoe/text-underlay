@@ -16,6 +16,10 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      animation: {
+        "slide-up-fade": "slide-up-fade 0.3s ease-out",
+        "fade-in": "fade-in 0.3s ease-out",
+      },
     },
   },
   plugins: [

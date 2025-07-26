@@ -15,7 +15,7 @@ const LoginButton = () => {
                 access_type: 'offline',
                 prompt: 'consent',
             },
-            redirectTo: 'https://textbehindimage.rexanwong.xyz/app'
+            redirectTo: window.location.origin
         },
     })
 
@@ -28,7 +28,7 @@ const LoginButton = () => {
   }
 
   return (
-    <Button variant="outline" className="gap-2" onClick={() => signInWithGoogle()}>
+    <Button variant="outline" className="w-full gap-2" onClick={() => signInWithGoogle()}>
       <FcGoogle />
       Log in
     </Button>
