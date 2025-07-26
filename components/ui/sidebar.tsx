@@ -151,7 +151,10 @@ export function Sidebar({
                 className="flex-1"
                 title="Undo"
               >
-                <ArrowLeft2 size="16" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7.13 18.31h8c2.76 0 5-2.24 5-5s-2.24-5-5-5h-11"/>
+                  <path d="M6.43 10.81 3.87 8.25l2.56-2.56"/>
+                </svg>
               </Button>
               <Button 
                 variant='outline' 
@@ -167,7 +170,7 @@ export function Sidebar({
 
             {/* User Status */}
             {user && currentUser && (
-              <li className="px-3 py-2">
+              <li className="py-2">
                 <div className="text-sm text-slate-600 dark:text-gray-400">
                   {currentUser.paid ? (
                     <p className="text-sm">Pro Plan</p>
@@ -244,7 +247,7 @@ export function Sidebar({
                         </div>
                       </div>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56" align="end">
+                    <DropdownMenuContent align="end">
                       <DropdownMenuLabel>
                         <div className="flex flex-col space-y-1">
                           <p className="text-sm font-medium leading-none">{currentUser?.full_name}</p>
