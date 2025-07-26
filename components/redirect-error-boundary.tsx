@@ -62,7 +62,7 @@ class RedirectErrorBoundary extends Component<Props, State> {
 
       return (
         <AlertDialog open={this.state.hasError}>
-          <AlertDialogContent className="sm:max-w-[425px]">
+          <AlertDialogContent className="sm:max-w-[425px] dark:bg-gray-500 p-8 h-full">
             <AlertDialogHeader>
               <AlertDialogTitle>
                 {this.state.isAuthError ? 'Authentication Error' : 'Something went wrong'}

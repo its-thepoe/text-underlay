@@ -87,8 +87,8 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
             <AccordionTrigger>{textSet.text}</AccordionTrigger>
             <AccordionContent>
                 {/* Mobile Controls */}
-                <div className="md:hidden">
-                    <div className="flex w-full gap-1 mb-2 p-1">
+                <div className="md:hidden" role="region" aria-label="Mobile Text Controls">
+                    <div className="flex w-full gap-1 mb-2 p-1" role="tablist" aria-label="Control Tabs">
                         {['text', 'position', 'effects'].map(tab => (
                             <button
                                 key={tab}
@@ -97,6 +97,8 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                                 aria-label={
                                   tab === 'text' ? 'Text' : tab === 'position' ? 'Position' : 'Effects & Styling'
                                 }
+                                role="tab"
+                                aria-selected={activeControl === tab}
                             >
                                 {tab === 'text' && <Text size={22} />}
                                 {tab === 'position' && <ArrowSwapHorizontal size={22} />}
@@ -104,7 +106,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                             </button>
                         ))}
                     </div>
-                    <div className="mt-2">
+                    <div className="mt-2" role="tabpanel" aria-label="Control Panel">
                         {/* TEXT TAB */}
                         {activeControl === 'text' && (
                             <>
@@ -233,14 +235,14 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                 </div>
 
                 {/* Desktop Layout */}
-                <div className="hidden md:block hide-scrollbar" style={{overflowY: 'auto'}}>
+                <div className="hidden md:block hide-scrollbar" style={{overflowY: 'auto'}} role="region" aria-label="Desktop Text Controls">
                     <InputField
                         attribute="text"
                         label="Text"
                         currentValue={textSet.text}
                         handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                     />
-                    <div className='flex flex-row items-center gap-12 w-full'>
+                    <div className='flex flex-row items-center gap-12 w-full' role="region" aria-label="Font and Color Controls">
                         <FontFamilyPicker
                             attribute="fontFamily"
                             currentFont={textSet.fontFamily}
@@ -254,7 +256,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                             handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                         />
                     </div>
-                    <div className="flex flex-col gap-2 mt-4">
+                    <div className="flex flex-col gap-2 mt-4" role="region" aria-label="Text Positioning Controls">
                         <SliderField
                             attribute="xPct"
                             label="X Position (%)"
@@ -334,7 +336,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                     </div>
                 </div>
 
-                <div className="flex flex-row gap-2 my-8">
+                <div className="flex flex-row gap-2 my-8" role="region" aria-label="Text Set Actions">
                     <Button 
   onClick={() => duplicateTextSet(textSet)}
   variant="secondary"

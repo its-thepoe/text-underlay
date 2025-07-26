@@ -241,7 +241,7 @@ const PayDialog: React.FC<PayDialogProps> = ({ userDetails, userEmail, isOpen, o
         </DialogHeader>
         
         {/* Toggle Section (using Switch component) */}
-        <div className="flex justify-center items-center mb-6 mt-4">
+        <div className="flex justify-center items-center mb-6 mt-4" role="region" aria-label="Billing Period Toggle">
           <Label htmlFor="payment-schedule" className={`me-3 ${!isAnnual ? "font-bold" : ""}`}>
             Monthly
           </Label>
@@ -275,9 +275,9 @@ const PayDialog: React.FC<PayDialogProps> = ({ userDetails, userEmail, isOpen, o
         </div>
 
         {/* Grid Cards */}
-        <div className="grid gap-4 md:grid-cols-2">
-          <Card className="flex flex-col justify-between">
-            <div>
+        <div className="grid gap-4 md:grid-cols-2" role="region" aria-label="Pricing Plans">
+          <Card className="flex flex-col justify-between" role="region" aria-label="Free Plan">
+            <div role="region" aria-label="Free Plan Content">
               <CardHeader className="text-center pb-2">
                 <CardTitle className="mb-2">Free</CardTitle>
                 <span className="font-bold text-6xl">$0</span>
@@ -285,18 +285,18 @@ const PayDialog: React.FC<PayDialogProps> = ({ userDetails, userEmail, isOpen, o
               <CardDescription className="text-center text-base text-muted-foreground">
               </CardDescription>
               <CardContent>
-                <ul className="mt-7 space-y-2.5 text-sm">
-                  <li className="flex space-x-2">
+                <ul className="mt-7 space-y-2.5 text-sm" role="list" aria-label="Free Plan Features">
+                  <li className="flex space-x-2" role="listitem">
                     <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                    <span className="text-muted-foreground">2 free generations / account</span>
+                    <span className="text-gray-500 dark:text-gray-400">2 free generations / account</span>
                   </li>
-                  <li className="flex space-x-2">
+                  <li className="flex space-x-2" role="listitem">
                     <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                    <span className="text-muted-foreground">Basic text editing features</span>
+                    <span className="text-gray-500 dark:text-gray-400">Basic text editing features</span>
                   </li>
-                  <li className="flex space-x-2">
+                  <li className="flex space-x-2" role="listitem">
                     <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                    <span className="text-muted-foreground">Access to 6 free fonts</span>
+                    <span className="text-gray-500 dark:text-gray-400">Access to 6 free fonts</span>
                   </li>
                 </ul>
               </CardContent>
@@ -313,15 +313,15 @@ const PayDialog: React.FC<PayDialogProps> = ({ userDetails, userEmail, isOpen, o
             </CardFooter>
           </Card>
 
-          <Card className="border-primary flex flex-col justify-between">
-            <div>
+          <Card className="border-primary flex flex-col justify-between" role="region" aria-label="Pro Plan">
+            <div role="region" aria-label="Pro Plan Content">
               <CardHeader className="text-center pb-2">
                 <CardTitle className="mb-2">Pro</CardTitle>
-                <div className="flex items-center justify-center mb-2">
+                <div className="flex items-center justify-center mb-2" role="region" aria-label="Pro Plan Pricing">
                   <span className="font-bold text-6xl">
                     ${isAnnual ? '3' : '5'}
                   </span>
-                  <span className="text-muted-foreground ml-2">/month</span>
+                  <span className="text-gray-500 dark:text-gray-400 ml-2">/month</span>
                 </div>
                 {isAnnual && (
                   <Badge className="uppercase w-max self-center">
@@ -330,26 +330,26 @@ const PayDialog: React.FC<PayDialogProps> = ({ userDetails, userEmail, isOpen, o
                 )}
               </CardHeader>
               <CardContent>
-                <ul className="mt-7 space-y-2.5 text-sm">
-                  <li className="flex space-x-2">
+                <ul className="mt-7 space-y-2.5 text-sm" role="list" aria-label="Pro Plan Features">
+                  <li className="flex space-x-2" role="listitem">
                     <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                    <span className="text-muted-foreground">Everything in Free</span>
+                    <span className="text-gray-500 dark:text-gray-400">Everything in Free</span>
                   </li>
-                  <li className="flex space-x-2">
+                  <li className="flex space-x-2" role="listitem">
                     <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                    <span className="text-muted-foreground">Unlimited generations / account</span>
+                    <span className="text-gray-500 dark:text-gray-400">Unlimited generations / account</span>
                   </li>
-                  <li className="flex space-x-2">
+                  <li className="flex space-x-2" role="listitem">
                     <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                    <span className="text-muted-foreground">Access to all 250 fonts</span>
+                    <span className="text-gray-500 dark:text-gray-400">Access to all 250 fonts</span>
                   </li>
-                  <li className="flex space-x-2">
+                  <li className="flex space-x-2" role="listitem">
                     <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                    <span className="text-muted-foreground">Letter spacing control</span>
+                    <span className="text-gray-500 dark:text-gray-400">Letter spacing control</span>
                   </li>
-                  <li className="flex space-x-2">
+                  <li className="flex space-x-2" role="listitem">
                     <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                    <span className="text-muted-foreground">3D tilt effects</span>
+                    <span className="text-gray-500 dark:text-gray-400">3D tilt effects</span>
                   </li>
 
                 </ul>

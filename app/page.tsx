@@ -20,6 +20,7 @@ import LoginButton from '@/components/login-button';
 import TextCustomizer from '@/components/editor/text-customizer';
 import { Sidebar } from '@/components/ui/sidebar';
 
+
 import { Add, Refresh } from 'iconsax-react';
 
 import { removeBackground } from "@imgly/background-removal";
@@ -396,7 +397,7 @@ const Page = () => {
             <div aria-live="polite" style={{position:'absolute',left:'-9999px',height:0,width:0,overflow:'hidden'}}>{ariaAnnouncement}</div>
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1609710199882100" crossOrigin="anonymous"></script>
             
-            <div className='flex h-screen'>
+            <div className='flex h-screen' role="main" aria-label="Text Underlay Application">
                 <Sidebar
                     onUploadImage={handleUploadImage}
                     onSaveImage={saveCompositeImage}
@@ -410,7 +411,7 @@ const Page = () => {
                     onPayDialogOpen={() => setIsPayDialogOpen(true)}
                 />
                 
-                <div className='flex flex-col flex-1 h-screen'>
+                <div className='flex flex-col flex-1 h-screen p-4' role="region" aria-label="Main Content Area">
                 <input
                     type="file"
                     ref={fileInputRef}
@@ -418,12 +419,12 @@ const Page = () => {
                     onChange={handleFileChange}
                     accept=".jpg, .jpeg, .png"
                 /> 
-                    <div className='flex-1 flex flex-col md:flex-row gap-4 md:gap-8 overflow-hidden w-full h-full px-2 md:px-8 py-2'>
+                    <div className='flex-1 flex flex-col md:flex-row gap-4 md:gap-8 overflow-hidden w-full h-full px-2 md:px-8 py-2' role="region" aria-label="Workspace Layout">
                         {/* Image Preview + Controls wrapper */}
-                        <div className='flex flex-1 flex-col md:flex-row gap-4 w-full h-full'>
+                        <div className='flex flex-1 flex-col md:flex-row gap-4 w-full h-full' role="region" aria-label="Image Editor Workspace">
                          
                             {/* Controls Section */}
-                            <div className='w-full md:w-[420px] max-w-full flex flex-col overflow-y-auto h-full pr-1 md:hidden'>
+                            <div className='w-full md:w-[420px] max-w-full flex flex-col overflow-y-auto h-full pr-1 md:hidden' role="region" aria-label="Mobile Controls Panel">
                                 {selectedImage && (
                                     <button
                                         onClick={saveCompositeImage}
@@ -438,19 +439,19 @@ const Page = () => {
                                         </svg>
                                     </button>
                                 )}
-                                <div className='block md:hidden'>
+                                <div className='block md:hidden' role="region" aria-label="Mobile Usage Status">
                                     {user && currentUser?.paid ? (
                                         <p className='text-sm'>
 
                                         </p>
                                     ) : (
-                                        <div className='flex items-center gap-5'>
+                                        <div className='flex items-center gap-5' role="region" aria-label="Usage Limit Display">
                                             <p className='text-sm'>
                                                 {user && currentUser ? `${2 - (currentUser.images_generated)} generations left` : 'Login to start creating'}
                                             </p>
                                             <Button 
                                                 variant="link" 
-                                                className="p-0 h-auto text-sm text-primary hover:underline"
+                                                className="p-0 h-auto text-sm text-blue-600 hover:underline"
                                                 onClick={() => setIsPayDialogOpen(true)}
                                             >
                                                 Upgrade
@@ -462,6 +463,8 @@ const Page = () => {
                             <div
                                 ref={previewRef}
                                 className="min-h-[400px] w-full p-4 border border-border rounded-lg relative overflow-hidden"
+                                role="region" 
+                                aria-label="Image Preview Canvas"
                             >
                                 {selectedImage ? (
                                     isImageSetupDone ? (
@@ -479,13 +482,13 @@ const Page = () => {
                                         <span className='flex items-center w-full gap-2'><Refresh className='animate-spin' /> Loading, please wait</span>
                                     )
                                 ) : (
-                                    <div className='flex items-center justify-center h-full'>
-                                        <div className='text-center space-y-4'>
+                                    <div className='flex items-center justify-center h-full' role="region" aria-label="Welcome Screen">
+                                        <div className='text-center space-y-4' role="region" aria-label="Welcome Content">
                                             <h2 className="text-xl font-semibold">Welcome to Text Underlay!</h2>
-                                            <p className="text-muted-foreground">Upload an image to get started creating stunning text-underlay designs.</p>
+                                            <p className="text-gray-500 dark:text-gray-400">Upload an image to get started creating stunning text-underlay designs.</p>
                                             {!user && (
-                                                <div className='flex flex-col items-center gap-2'>
-                                                    <p className="text-sm text-muted-foreground">Login to save your work and access premium features</p>
+                                                <div className='flex flex-col items-center gap-2' role="region" aria-label="Login Prompt">
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400">Login to save your work and access premium features</p>
                                                     <LoginButton />
                                                 </div>
                                             )}
@@ -543,9 +546,9 @@ const Page = () => {
                             </div>
         
                         </div>
-                        <div className='flex flex-col w-full md:w-1/2'>
+                        <div className='flex flex-col w-full md:w-1/3' role="region" aria-label="Text Customization Panel">
                             <Button variant="secondary" onClick={addNewTextSet}><Add className='mr-2'/> Add New Text Set</Button>
-                            <ScrollArea className="h-[calc(100vh-10rem)] p-2">
+                            <ScrollArea className="h-[calc(100vh-10rem)] p-2" role="region" aria-label="Text Sets List">
                                 <Accordion type="single" collapsible className="w-full mt-2">
                                     {textSets.map(textSet => (
                                         <TextCustomizer 

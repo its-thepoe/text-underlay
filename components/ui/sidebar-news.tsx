@@ -28,8 +28,10 @@ export function News({ articles }: { articles: NewsArticle[] }) {
     <div
       className="group overflow-hidden px-3 pb-3 pt-8"
       data-active={cardCount !== 0}
+      role="region"
+      aria-label="News Feed"
     >
-      <div className="relative size-full">
+      <div className="relative size-full" role="region" aria-label="News Cards Container">
         {cards.toReversed().map(({ id, title, summary, image }, idx) => (
           <div
             key={id}
@@ -53,6 +55,8 @@ export function News({ articles }: { articles: NewsArticle[] }) {
               } as React.CSSProperties
             }
             aria-hidden={idx !== cardCount - 1}
+            role="article"
+            aria-label={`News Card ${idx + 1}`}
           >
             <NewsCard
               title={title}
@@ -66,7 +70,7 @@ export function News({ articles }: { articles: NewsArticle[] }) {
             />
           </div>
         ))}
-        <div className="pointer-events-none invisible" aria-hidden>
+        <div className="pointer-events-none invisible" aria-hidden role="region" aria-label="Placeholder Card">
           <NewsCard title="Title" description="Description" />
         </div>
         {/* "You're all caught up" message removed as requested */}
@@ -190,9 +194,9 @@ function NewsCard({
       data-dragging={dragging}
       onPointerDown={onPointerDown}
     >
-      <div className={cn(hideContent && "invisible")}>
+      <div className={cn(hideContent && "invisible")} role="region" aria-label="News Card Content">
         {/* Announcement text hidden as requested */}
-        <div className="hidden">
+        <div className="hidden" role="region" aria-label="Hidden News Text">
           <span className="line-clamp-1 font-medium text-foreground">
             {title}
           </span>
@@ -200,7 +204,7 @@ function NewsCard({
             {description}
           </p>
         </div>
-        <div className="relative mt-3 aspect-square w-full shrink-0 overflow-hidden rounded border bg-muted">
+        <div className="relative mt-3 aspect-square w-full shrink-0 overflow-hidden rounded border bg-muted" role="region" aria-label="News Image">
           {image && (
             <Image
               src={image}
@@ -217,8 +221,10 @@ function NewsCard({
             "h-0 overflow-hidden opacity-0 transition-[height,opacity] duration-200",
             "sm:group-has-[*[data-dragging=true]]:h-7 sm:group-has-[*[data-dragging=true]]:opacity-100 sm:group-hover:group-data-[active=true]:h-7 sm:group-hover:group-data-[active=true]:opacity-100"
           )}
+          role="region"
+          aria-label="News Card Actions"
         >
-          <div className="flex items-center justify-end pt-3 text-xs">
+          <div className="flex items-center justify-end pt-3 text-xs" role="region" aria-label="Dismiss Button Container">
             <button
               type="button"
               onClick={dismiss}
