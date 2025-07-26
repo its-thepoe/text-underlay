@@ -234,6 +234,40 @@ const Page = () => {
     };
 
     const saveCompositeImage = () => {
+    // If user is not logged in, save current state to localStorage and redirect to Google login
+    if (!user) {
+      // Save current state to localStorage with a special key for post-login restoration
+      try {
+        localStorage.setItem('pendingSave', JSON.stringify({ 
+          textSets, 
+          selectedImage, 
+          uploadedImageBase64,
+          timestamp: Date.now()
+        }));
+        
+        // Show a brief message to the user
+        setAriaAnnouncement('Please log in to save your image. Your edits will be preserved.');
+        
+        // Redirect to Google login
+        const supabase = supabaseClient;
+        supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            queryParams: {
+              access_type: 'offline',
+              prompt: 'consent',
+            },
+            redirectTo: window.location.origin
+          },
+        });
+        return;
+      } catch (e) {
+        console.error('Error saving pending state:', e);
+        alert('Please log in to save your image');
+        return;
+      }
+    }
+    
     if (!canvasRef.current || !isImageSetupDone) return;
 
     const canvas = canvasRef.current;
@@ -331,6 +365,46 @@ const Page = () => {
     useEffect(() => {
       if (user?.id) {
         getCurrentUser(user.id)
+        
+        // Check for pending save after login
+        const pendingSave = localStorage.getItem('pendingSave');
+        if (pendingSave) {
+          try {
+            const parsed = JSON.parse(pendingSave);
+            
+            // Only restore if the pending save is less than 30 minutes old
+            const isRecent = Date.now() - parsed.timestamp < 30 * 60 * 1000;
+            
+            if (isRecent && Array.isArray(parsed.textSets)) {
+              // Restore the text sets
+              setTextSets(parsed.textSets);
+              
+              // Restore the image
+              if (parsed.uploadedImageBase64) {
+                setSelectedImage(parsed.uploadedImageBase64);
+                setUploadedImageBase64(parsed.uploadedImageBase64);
+                setupImage(parsed.uploadedImageBase64);
+              } else if (parsed.selectedImage) {
+                setSelectedImage(parsed.selectedImage);
+                setupImage(parsed.selectedImage);
+              }
+              
+              // Show confirmation to user
+              setAriaAnnouncement('Your image and edits have been restored. You can now save your image.');
+              
+              // Automatically trigger save after a short delay
+              setTimeout(() => {
+                saveCompositeImage();
+              }, 2000);
+            }
+            
+            // Remove the pending save regardless of whether it was restored
+            localStorage.removeItem('pendingSave');
+          } catch (e) {
+            console.error('Error restoring pending save:', e);
+            localStorage.removeItem('pendingSave');
+          }
+        }
       }
     }, [user])
     
@@ -412,6 +486,7 @@ const Page = () => {
                 />
                 
                 <div className='flex flex-col flex-1 h-screen p-4' role="region" aria-label="Main Content Area">
+                <div className='flex flex-col flex-1 h-full p-2 border border-gray-200 dark:border-gray-800 rounded-2xl bg-white dark:bg-black'>
                 <input
                     type="file"
                     ref={fileInputRef}
@@ -569,6 +644,7 @@ const Page = () => {
                         <PayDialog userDetails={currentUser as any} userEmail={user.user_metadata.email} isOpen={isPayDialogOpen} onClose={() => setIsPayDialogOpen(false)} />
                     )}
                 </div>
+            </div>
             </div>
         </>
     );

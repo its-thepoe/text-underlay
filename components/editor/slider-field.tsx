@@ -96,7 +96,7 @@ const SliderField: React.FC<SliderFieldProps> = ({
         <div className="flex items-center gap-2">
           <Label htmlFor={attribute}>{label}</Label>
           {premiumFeature && (
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
               <Lock size="16" />
               <span>Pro</span>
             </div>

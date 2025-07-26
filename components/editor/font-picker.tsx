@@ -49,7 +49,7 @@ const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
     <Popover>
       <div className='flex flex-col items-start justify-start my-8'>
         <Label>
-          Font Family {!isPaidUser && <span className="text-xs text-muted-foreground ml-2">(6 free fonts available)</span>}
+          Font Family {!isPaidUser && <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">(6 free fonts available)</span>}
         </Label>
         <PopoverTrigger asChild>
           <Button
@@ -57,7 +57,7 @@ const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
             role="combobox"
             className={cn(
               "w-[200px] justify-between mt-3 p-2",
-              !currentFont && "text-muted-foreground"
+              !currentFont && "text-gray-500 dark:text-gray-400"
             )}
           >
             {currentFont ? currentFont : "Select font family"}

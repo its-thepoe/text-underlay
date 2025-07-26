@@ -96,7 +96,7 @@ export function Sidebar({
       {/* Mobile hamburger button */}
       <button
         onClick={toggleSidebar}
-        className="fixed top-6 left-6 z-[50] p-3 rounded-lg bg-white shadow-md border border-slate-100 md:hidden hover:bg-slate-50 transition-all duration-200 dark:bg-gray-800 dark:border-gray-700"
+        className="fixed top-6 left-6 z-[50] p-3 rounded-lg bg-white shadow-md border border-slate-100 md:hidden hover:bg-slate-50 transition-all duration-200 ease-out dark:bg-gray-800 dark:border-gray-700"
         aria-label="Toggle sidebar"
       >
         {isOpen ? 
@@ -108,7 +108,7 @@ export function Sidebar({
       {/* Mobile overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[40] md:hidden transition-opacity duration-300" 
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[40] md:hidden transition-opacity duration-200 ease-out" 
           onClick={toggleSidebar}
           role="button"
           aria-label="Close sidebar overlay"
@@ -118,7 +118,7 @@ export function Sidebar({
       {/* Sidebar */}
       <div
         className={`
-          fixed top-0 left-0 h-screen bg-white dark:bg-gray-900 z-[45] transition-all duration-300 ease-in-out flex flex-col
+          fixed top-0 left-0 h-screen bg-white dark:bg-gray-900 z-[45] transition-all duration-200 ease-out flex flex-col
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           ${isCollapsed ? "w-20" : "w-80"}
           md:translate-x-0 md:static md:z-auto
@@ -308,7 +308,7 @@ export function Sidebar({
             
             {/* Built by section */}
             <div className="p-3 border-t border-slate-200 dark:border-gray-700" role="region" aria-label="Developer Credits">
-              <div className="flex items-center justify-between gap-2 text-xs text-slate-500 dark:text-gray-400" role="region" aria-label="Credits Content">
+              <div className="flex items-center justify-center gap-6 text-xs text-slate-500 dark:text-gray-400" role="region" aria-label="Credits Content">
                 <div className="flex items-center" role="region" aria-label="Developer Info">
                   <span className="mr-1">Built by</span>
                   {isCollapsed ? (
@@ -328,13 +328,13 @@ export function Sidebar({
                             </Avatar>
                             <div className="space-y-1 flex-1" role="region" aria-label="Developer Contact">
                               <h4 className="text-sm font-semibold">Dipo</h4>
-                              <p className="text-xs text-muted-foreground">
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
                                 Design Engineer
                               </p>
                               <div className="flex items-center pt-1">
                                 <a
                                   href="mailto:hi@thepoe.xyz"
-                                  className="text-xs text-muted-foreground hover:underline inline-flex items-center gap-1"
+                                  className="text-xs text-gray-500 dark:text-gray-400 hover:underline inline-flex items-center gap-1"
                                   target="_blank"
                                   rel="noopener noreferrer"
                                 >
@@ -363,13 +363,13 @@ export function Sidebar({
                           </Avatar>
                           <div className="space-y-1 flex-1" role="region" aria-label="Developer Contact">
                             <h4 className="text-sm font-semibold">Dipo</h4>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                               Design Engineer
                             </p>
                             <div className="flex items-center pt-1">
                               <a
                                 href="mailto:hi@thepoe.xyz"
-                                className="text-xs text-muted-foreground hover:underline inline-flex items-center gap-1"
+                                className="text-xs text-gray-500 dark:text-gray-400 hover:underline inline-flex items-center gap-1"
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
@@ -383,6 +383,7 @@ export function Sidebar({
                     </HoverCard>
                   )}
                 </div>
+                <span className="flex items-center justify-center w-1 h-1 rounded-full bg-slate-500 dark:bg-gray-400">•</span>
                 <a 
                   href="https://github.com/its-thepoe/text-underlay" 
                   target="_blank" 

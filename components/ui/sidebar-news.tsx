@@ -197,10 +197,10 @@ function NewsCard({
       <div className={cn(hideContent && "invisible")} role="region" aria-label="News Card Content">
         {/* Announcement text hidden as requested */}
         <div className="hidden" role="region" aria-label="Hidden News Text">
-          <span className="line-clamp-1 font-medium text-foreground">
+          <span className="line-clamp-1 font-medium text-gray-900 dark:text-gray-100">
             {title}
           </span>
-          <p className="line-clamp-2 h-10 leading-5 text-muted-foreground">
+          <p className="line-clamp-2 h-10 leading-5 text-gray-500 dark:text-gray-400">
             {description}
           </p>
         </div>
@@ -228,7 +228,7 @@ function NewsCard({
             <button
               type="button"
               onClick={dismiss}
-              className="text-muted-foreground hover:text-foreground transition-colors duration-75"
+              className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-75"
             >
               Dismiss
             </button>
@@ -245,7 +245,7 @@ function AnimatedLogo(props: React.SVGProps<SVGSVGElement>) {
       viewBox="0 0 48 21"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="text-muted-foreground"
+      className="text-gray-500 dark:text-gray-400"
       {...props}
     >
       <path
