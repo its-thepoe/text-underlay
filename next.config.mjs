@@ -18,6 +18,10 @@ const nextConfig = {
               protocol: 'https',
               hostname: 'assets.dub.co',
             },
+            {
+              protocol: 'https',
+              hostname: 'picsum.photos',
+            },
           ],
     },
 
