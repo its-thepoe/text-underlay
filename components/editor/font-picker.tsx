@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
-import { CaretSortIcon, CheckIcon, LockClosedIcon } from '@radix-ui/react-icons';
+import { ArrowDown2, TickSquare, Lock } from 'iconsax-react';
 import { cn } from '@/lib/utils';
 import { FREE_FONTS, ALL_FONTS } from '@/constants/fonts';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
@@ -61,7 +61,7 @@ const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
             )}
           >
             {currentFont ? currentFont : "Select font family"}
-            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <ArrowDown2 className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
       </div>
@@ -84,7 +84,7 @@ const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
                     style={{ fontFamily: font }}
                   >
                     {font}
-                    <CheckIcon
+                    <TickSquare
                       className={cn(
                         "ml-auto h-4 w-4",
                         font === currentFont ? "opacity-100" : "opacity-0"
@@ -107,9 +107,9 @@ const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
                   style={{ fontFamily: font }}
                 >
                   {font}
-                  {!isPaidUser && <LockClosedIcon className="ml-auto h-4 w-4" />}
+                  {!isPaidUser && <Lock className="ml-auto h-4 w-4" />}
                   {isPaidUser && (
-                    <CheckIcon
+                    <TickSquare
                       className={cn(
                         "ml-auto h-4 w-4",
                         font === currentFont ? "opacity-100" : "opacity-0"

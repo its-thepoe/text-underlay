@@ -19,7 +19,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from "./ui/button"
 import { Profile } from "@/types"
 import { useToast } from "@/hooks/use-toast"
-import { CheckIcon } from "@radix-ui/react-icons"
+import { TickSquare } from "iconsax-react"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
@@ -287,15 +287,15 @@ const PayDialog: React.FC<PayDialogProps> = ({ userDetails, userEmail, isOpen, o
               <CardContent>
                 <ul className="mt-7 space-y-2.5 text-sm">
                   <li className="flex space-x-2">
-                    <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                    <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
                     <span className="text-muted-foreground">2 free generations / account</span>
                   </li>
                   <li className="flex space-x-2">
-                    <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                    <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
                     <span className="text-muted-foreground">Basic text editing features</span>
                   </li>
                   <li className="flex space-x-2">
-                    <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                    <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
                     <span className="text-muted-foreground">Access to 6 free fonts</span>
                   </li>
                 </ul>
@@ -332,23 +332,23 @@ const PayDialog: React.FC<PayDialogProps> = ({ userDetails, userEmail, isOpen, o
               <CardContent>
                 <ul className="mt-7 space-y-2.5 text-sm">
                   <li className="flex space-x-2">
-                    <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                    <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
                     <span className="text-muted-foreground">Everything in Free</span>
                   </li>
                   <li className="flex space-x-2">
-                    <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                    <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
                     <span className="text-muted-foreground">Unlimited generations / account</span>
                   </li>
                   <li className="flex space-x-2">
-                    <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                    <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
                     <span className="text-muted-foreground">Access to all 250 fonts</span>
                   </li>
                   <li className="flex space-x-2">
-                    <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                    <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
                     <span className="text-muted-foreground">Letter spacing control</span>
                   </li>
                   <li className="flex space-x-2">
-                    <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                    <TickSquare className="flex-shrink-0 mt-0.5 h-4 w-4" />
                     <span className="text-muted-foreground">3D tilt effects</span>
                   </li>
 

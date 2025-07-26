@@ -4,7 +4,7 @@ import Image from "next/image";
 import createGlobe from "cobe";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { IconBrandYoutubeFilled } from "@tabler/icons-react";
+import { Play } from "iconsax-react";
 import Link from "next/link";
 import { ArrowRight, Export } from "iconsax-react";
 import { Button } from "./button";
@@ -298,7 +298,7 @@ export const SkeletonThree = () => {
     >
       <div className="w-full  mx-auto bg-transparent dark:bg-transparent group h-full">
         <div className="flex flex-1 w-full h-full flex-col space-y-2  relative">
-          <IconBrandYoutubeFilled className="h-20 w-20 absolute z-10 inset-0 text-red-500 m-auto " />
+          <Play className="h-20 w-20 absolute z-10 inset-0 text-red-500 m-auto " />
           <Image
             src={''}
             alt="header"

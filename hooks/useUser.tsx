@@ -4,6 +4,7 @@ import {
     useUser as useSupaUser
 } from "@supabase/auth-helpers-react";
 import { Profile } from "@/types";
+import { getUserProfile } from "@/lib/supabase";
 
 import { useContext, createContext, useState, useEffect } from "react";
 
@@ -33,23 +34,19 @@ export const MyUserContextProvider = (props: Props) => {
     const [isLoadingData, setIsLoadingData] = useState(false)
     const [userDetails, setUserDetails] = useState<Profile | null>(null)
 
-    const getUserDetails = () => supabase.from('users').select('*').single()
-
     useEffect(() => {
         if (user && !isLoadingData && !userDetails) {
             setIsLoadingData(true)
 
-            Promise.allSettled([getUserDetails()]).then(
-                (results) => {
-                    const userDetailsPromise = results[0];
-
-                    if (userDetailsPromise.status === "fulfilled") {
-                        setUserDetails(userDetailsPromise.value.data as Profile);
-                    }
-
+            getUserProfile(user.id).then(
+                (data) => {
+                    setUserDetails(data as Profile);
                     setIsLoadingData(false)
                 }
-            )
+            ).catch((error) => {
+                console.error('Error fetching user details:', error);
+                setIsLoadingData(false)
+            })
         } else if (!user && !isLoadingUser && !isLoadingData) {
             setUserDetails(null);
         }

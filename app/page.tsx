@@ -20,7 +20,7 @@ import LoginButton from '@/components/login-button';
 import TextCustomizer from '@/components/editor/text-customizer';
 import { Sidebar } from '@/components/ui/sidebar';
 
-import { PlusIcon, ReloadIcon } from '@radix-ui/react-icons';
+import { Add, Refresh } from 'iconsax-react';
 
 import { removeBackground } from "@imgly/background-removal";
 
@@ -476,7 +476,7 @@ const Page = () => {
                                             }}
                                         />
                                     ) : (
-                                        <span className='flex items-center w-full gap-2'><ReloadIcon className='animate-spin' /> Loading, please wait</span>
+                                        <span className='flex items-center w-full gap-2'><Refresh className='animate-spin' /> Loading, please wait</span>
                                     )
                                 ) : (
                                     <div className='flex items-center justify-center h-full'>
@@ -544,7 +544,7 @@ const Page = () => {
         
                         </div>
                         <div className='flex flex-col w-full md:w-1/2'>
-                            <Button variant="secondary" onClick={addNewTextSet}><PlusIcon className='mr-2'/> Add New Text Set</Button>
+                            <Button variant="secondary" onClick={addNewTextSet}><Add className='mr-2'/> Add New Text Set</Button>
                             <ScrollArea className="h-[calc(100vh-10rem)] p-2">
                                 <Accordion type="single" collapsible className="w-full mt-2">
                                     {textSets.map(textSet => (

@@ -13,7 +13,6 @@ import {
   Sun1,
   Moon
 } from 'iconsax-react';
-import { Undo2, Redo2 } from 'lucide-react';
 import { Button } from './button';
 import { Avatar, AvatarFallback, AvatarImage } from './avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './dropdown-menu';
@@ -122,9 +121,6 @@ export function Sidebar({
         <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-gray-700 bg-slate-50/60 dark:bg-gray-800/60">
           {!isCollapsed && (
             <div className="flex items-center space-x-2.5">
-              <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
-                <span className="text-white font-bold text-base">T</span>
-              </div>
               <div className="flex flex-col">
                 <span className="font-semibold text-slate-800 dark:text-white text-base">Text Underlay</span>
                 <span className="text-xs text-slate-500 dark:text-gray-400">Built by</span>
@@ -155,7 +151,7 @@ export function Sidebar({
                 className="flex-1"
                 title="Undo"
               >
-                <Undo2 size="16" />
+                <ArrowLeft2 size="16" />
               </Button>
               <Button 
                 variant='outline' 
@@ -165,7 +161,7 @@ export function Sidebar({
                 className="flex-1"
                 title="Redo"
               >
-                <Redo2 size="16" />
+                <ArrowRight2 size="16" />
               </Button>
             </li>
 
