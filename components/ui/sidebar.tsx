@@ -190,9 +190,9 @@ export function Sidebar({
                     <p className="text-sm">Pro Plan</p>
                   ) : (
                     <div className="flex items-center gap-2" role="region" aria-label="Usage Limit">
-                      <p className="text-sm">
-                        {2 - (currentUser.images_generated)} generations left
-                      </p>
+                                              <p className="text-sm">
+                          {2 - (currentUser.images_generated)} {2 - (currentUser.images_generated) === 1 ? 'generation' : 'generations'} left
+                        </p>
                       <Button 
                         variant="link" 
                         className="p-0 h-auto text-sm text-blue-600 hover:underline"

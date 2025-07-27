@@ -23,27 +23,14 @@ const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
   handleAttributeChange,
   userId
 }) => {
-  const [isPaidUser, setIsPaidUser] = useState(false);
+  // All fonts are now free
+  const [isPaidUser, setIsPaidUser] = useState(true);
   const supabaseClient = useSupabaseClient();
 
-  useEffect(() => { 
-    const checkUserStatus = async () => {
-      try {
-        const { data: profile, error } = await supabaseClient
-          .from('profiles')
-          .select('paid')
-          .eq('id', userId)
-          .single();
-
-        if (error) throw error;
-        setIsPaidUser(profile?.paid || false);
-      } catch (error) {
-        console.error('Error checking user status:', error);
-      }
-    };
-
-    checkUserStatus();
-  }, [userId, supabaseClient]);
+  // User status check disabled - all fonts are now free
+  useEffect(() => {
+    // No need to check user status anymore
+  }, []);
 
   return (
     <Popover>

@@ -532,7 +532,7 @@ const Page = () => {
                                     ) : (
                                         <div className='flex items-center gap-5' role="region" aria-label="Usage Limit Display">
                                             <p className='text-sm'>
-                                                {user && currentUser ? `${2 - (currentUser.images_generated)} generations left` : 'Login to start creating'}
+                                                {user && currentUser ? `${2 - (currentUser.images_generated)} ${2 - (currentUser.images_generated) === 1 ? 'generation' : 'generations'} left` : 'Login to start creating'}
                                             </p>
                                             <Button 
                                                 variant="link" 
