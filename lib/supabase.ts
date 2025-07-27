@@ -7,15 +7,19 @@ export const supabase = createClientComponentClient<Database>()
 export const createOrUpdateProfile = async (userId: string, profileData: {
   full_name?: string
   avatar_url?: string
-  username?: string
 }) => {
   console.log('Creating profile with data:', { userId, profileData });
+  console.log('ProfileData details:', {
+    full_name: profileData.full_name,
+    avatar_url: profileData.avatar_url,
+    full_name_type: typeof profileData.full_name,
+    avatar_url_type: typeof profileData.avatar_url
+  });
   
   const profileToInsert = {
     id: userId,
-    full_name: profileData.full_name || null,
+    full_name: profileData.full_name || 'User',
     avatar_url: profileData.avatar_url || null,
-    username: profileData.username || null,
     images_generated: 0,
     paid: false,
     subscription_id: null
@@ -23,15 +27,29 @@ export const createOrUpdateProfile = async (userId: string, profileData: {
   
   console.log('Profile to insert:', profileToInsert);
   
-  const { data, error } = await supabase
+  // First try to insert/update
+  const { data: insertData, error: insertError } = await supabase
     .from('profiles')
     .upsert(profileToInsert)
-    .select()
+
+  if (insertError) {
+    console.error('Error creating/updating profile:', insertError)
+    console.error('Error details:', insertError.details, insertError.hint, insertError.message)
+    console.error('Full error object:', JSON.stringify(insertError, null, 2))
+    throw insertError
+  }
+
+  console.log('Profile inserted successfully, now fetching...');
+
+  // Then fetch the created profile
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
     .single()
 
   if (error) {
-    console.error('Error creating/updating profile:', error)
-    console.error('Error details:', error.details, error.hint, error.message)
+    console.error('Error fetching created profile:', error)
     throw error
   }
 
@@ -64,8 +82,7 @@ export const getUserProfile = async (userId: string) => {
       console.log('Profile not found, creating new profile...');
       return await createOrUpdateProfile(userId, {
         full_name: session.user.user_metadata?.full_name,
-        avatar_url: session.user.user_metadata?.avatar_url,
-        username: session.user.user_metadata?.email
+        avatar_url: session.user.user_metadata?.avatar_url
       });
     }
     throw error

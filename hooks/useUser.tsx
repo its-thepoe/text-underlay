@@ -61,8 +61,7 @@ export const MyUserContextProvider = (props: Props) => {
                     import('@/lib/supabase').then(({ createOrUpdateProfile }) => {
                         createOrUpdateProfile(user.id, {
                             full_name: user.user_metadata?.full_name,
-                            avatar_url: user.user_metadata?.avatar_url,
-                            username: user.user_metadata?.email
+                            avatar_url: user.user_metadata?.avatar_url
                         }).then((profile) => {
                             console.log('Profile created:', profile);
                             setUserDetails(profile as Profile);
