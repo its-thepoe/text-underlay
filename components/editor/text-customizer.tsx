@@ -40,27 +40,14 @@ interface TextCustomizerProps {
 
 const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttributeChange, removeTextSet, duplicateTextSet, userId, pushUndoCheckpoint = () => {} }) => {
     const [activeControl, setActiveControl] = useState<string | null>(null);
-    const [isPaidUser, setIsPaidUser] = useState(false);
+    // All features are now free
+    const [isPaidUser, setIsPaidUser] = useState(true);
     const supabaseClient = useSupabaseClient();
 
-    useEffect(() => { 
-        const checkUserStatus = async () => {
-            try {
-                const { data: profile, error } = await supabaseClient
-                    .from('profiles')
-                    .select('paid')
-                    .eq('id', userId)
-                    .single();
-
-                if (error) throw error;
-                setIsPaidUser(profile?.paid || false);
-            } catch (error) {
-                console.error('Error checking user status:', error);
-            }
-        };
-
-        checkUserStatus();
-    }, [userId, supabaseClient]);
+    // User status check disabled - all features are now free
+    useEffect(() => {
+        // No need to check user status anymore
+    }, []);
 
     const controls = [
         { id: 'text', icon: <Text size={20} />, label: 'Text' },
@@ -69,11 +56,11 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
         { id: 'position', icon: <ArrowSwapHorizontal size={20} />, label: 'Position' },
         { id: 'fontSize', icon: <Text size={20} />, label: 'Size' },
         { id: 'fontWeight', icon: <TextBold size={20} />, label: 'Weight' },
-        { id: 'letterSpacing', icon: <ArrowSwapHorizontal size={20} />, label: 'Letter spacing', premium: true },
+        { id: 'letterSpacing', icon: <ArrowSwapHorizontal size={20} />, label: 'Letter spacing' },
         { id: 'opacity', icon: <Lamp size={20} />, label: 'Opacity' },
         { id: 'rotation', icon: <RotateRight size={20} />, label: 'Rotate' },
-        { id: 'tiltX', icon: <ArrowSwapHorizontal size={20} />, label: 'Tilt X (3D effect)', premium: true },
-        { id: 'tiltY', icon: <ArrowSwapHorizontal size={20} />, label: 'Tilt Y (3D effect)', premium: true },
+        { id: 'tiltX', icon: <ArrowSwapHorizontal size={20} />, label: 'Tilt X (3D effect)' },
+        { id: 'tiltY', icon: <ArrowSwapHorizontal size={20} />, label: 'Tilt Y (3D effect)' },
     ];  
 
     const handlePremiumAttributeChange = (attribute: string, value: any) => {
