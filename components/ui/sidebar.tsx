@@ -128,7 +128,7 @@ export function Sidebar({
         aria-label="Application Sidebar"
       >
         {/* Header with logo and collapse button */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-gray-700 bg-slate-50/60 dark:bg-gray-800/60" role="banner" aria-label="Sidebar Header">
+        <div className="flex items-center justify-between pl-5 py-5" role="banner" aria-label="Sidebar Header">
           {!isCollapsed && (
             <div className="flex items-center space-x-2.5" role="region" aria-label="App Logo">
               <div className="flex flex-col" role="region" aria-label="App Title">
@@ -149,7 +149,7 @@ export function Sidebar({
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-2 overflow-y-auto" role="navigation" aria-label="Sidebar Navigation">
+        <nav className="flex-1 pl-3 py-2 overflow-y-auto" role="navigation" aria-label="Sidebar Navigation">
           <ul className="space-y-2" role="list" aria-label="Navigation Items">
             {/* Undo/Redo Controls */}
             <li className="flex gap-2" role="listitem" aria-label="Undo Redo Controls">
@@ -243,15 +243,15 @@ export function Sidebar({
         )}
 
         {/* Bottom section with profile and logout */}
-        <div className="mt-auto border-t border-slate-200 dark:border-gray-700" role="region" aria-label="User Profile Section">
+        <div className="mt-auto" role="region" aria-label="User Profile Section">
           {user && currentUser ? (
                           <>
                 {/* Profile Section */}
-                <div className={`border-b border-slate-200 dark:border-gray-700 bg-slate-50/30 dark:bg-gray-800/30 ${isCollapsed ? 'py-3 px-2' : 'p-3'}`} role="region" aria-label="User Profile">
+                <div className={` bg-slate-50/30 dark:bg-gray-800/30 ${isCollapsed ? 'py-3 px-2' : 'p-3'}`} role="region" aria-label="User Profile">
                   {!isCollapsed ? (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <div className="flex items-center px-3 py-2 rounded-md bg-white dark:bg-gray-800 hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer" role="button" aria-label="User Profile Menu">
+                        <div className="flex items-center px-3 py-2 rounded-md bg-white dark:bg-gray-800 hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors duration-200 ease cursor-pointer" role="button" aria-label="User Profile Menu">
                           <Avatar className="w-8 h-8">
                             <AvatarImage src={currentUser?.avatar_url} /> 
                             <AvatarFallback>{currentUser?.full_name?.[0]?.toUpperCase() ?? "?"}</AvatarFallback>
@@ -299,7 +299,7 @@ export function Sidebar({
             </>
                       ) : (
               /* Login Section for non-authenticated users */
-              <div className="p-3" role="region" aria-label="Login Section">
+              <div className="py-3 pl-3" role="region" aria-label="Login Section">
                 <div className={`flex items-center justify-center ${isCollapsed ? "justify-center" : ""}`} role="region" aria-label="Login Button Container">
                   <LoginButton />
                 </div>
@@ -307,7 +307,7 @@ export function Sidebar({
             )}
             
             {/* Built by section */}
-            <div className="p-3 border-t border-slate-200 dark:border-gray-700" role="region" aria-label="Developer Credits">
+            <div className="py-3 pl-3" role="region" aria-label="Developer Credits">
               <div className="flex items-center justify-center gap-6 text-xs text-slate-500 dark:text-gray-400" role="region" aria-label="Credits Content">
                 <div className="flex items-center" role="region" aria-label="Developer Info">
                   <span className="mr-1">Built by</span>
@@ -388,7 +388,7 @@ export function Sidebar({
                   href="https://github.com/its-thepoe/text-underlay" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="hover:text-slate-700 dark:hover:text-gray-300 transition-colors"
+                  className="hover:text-slate-700 dark:hover:text-gray-300 transition-colors duration-200 ease"
                 >
                   GitHub
                 </a>

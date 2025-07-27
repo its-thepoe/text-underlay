@@ -183,7 +183,7 @@ const SliderField: React.FC<SliderFieldProps> = ({
                 boxShadow: '0 2px 12px rgba(0,0,0,0.18)',
                 border: '1px solid #fff',
                 padding: '0 10px',
-                transition: 'left 0.08s cubic-bezier(.4,1.6,.6,1)',
+                transition: 'left 0.2s cubic-bezier(.25, .46, .45, .94)',
                 userSelect: 'none',
                 whiteSpace: 'nowrap',
               }}

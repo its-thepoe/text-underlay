@@ -26,7 +26,7 @@ export function News({ articles }: { articles: NewsArticle[] }) {
 
   return cards.length ? (
     <div
-      className="group overflow-hidden px-3 pb-3 pt-8"
+      className="group overflow-hidden pl-3 pb-3 pt-8"
       data-active={cardCount !== 0}
       role="region"
       aria-label="News Feed"
@@ -36,7 +36,7 @@ export function News({ articles }: { articles: NewsArticle[] }) {
           <div
             key={id}
             className={cn(
-              "absolute left-0 top-0 size-full scale-[var(--scale)] transition-[opacity,transform] duration-200",
+              "absolute left-0 top-0 size-full scale-[var(--scale)] transition-[opacity,transform] duration-200 ease-out",
               cardCount - idx > 3
                 ? [
                     "opacity-0 sm:group-hover:translate-y-[var(--y)] sm:group-hover:opacity-[var(--opacity)]",
@@ -129,7 +129,7 @@ function NewsCard({
     // Dismiss card
     animation.current = ref.current.animate(
       { opacity: 0, transform: `translateX(${translateX}px)` },
-      { duration: 150, easing: "ease-in-out", fill: "forwards" }
+      { duration: 200, easing: "cubic-bezier(.25, .46, .45, .94)", fill: "forwards" }
     );
     animation.current.onfinish = () => onDismiss?.();
   };
@@ -148,7 +148,7 @@ function NewsCard({
     // Animate back to original position
     animation.current = ref.current.animate(
       { transform: "translateX(0)" },
-      { duration: 150, easing: "ease-in-out" }
+      { duration: 200, easing: "cubic-bezier(.25, .46, .45, .94)" }
     );
     animation.current.onfinish = () =>
       ref.current?.style.setProperty("--dx", "0");
@@ -189,7 +189,7 @@ function NewsCard({
       className={cn(
         "relative select-none gap-2 p-3 text-[0.8125rem]",
         "translate-x-[calc(var(--dx)*1px)] rotate-[calc(var(--dx)*0.05deg)] opacity-[calc(1-max(var(--dx),-1*var(--dx))/var(--w)/2)]",
-        "transition-shadow data-[dragging=true]:shadow-md"
+                  "transition-shadow duration-200 ease-out data-[dragging=true]:shadow-md"
       )}
       data-dragging={dragging}
       onPointerDown={onPointerDown}
@@ -218,7 +218,7 @@ function NewsCard({
         </div>
         <div
           className={cn(
-            "h-0 overflow-hidden opacity-0 transition-[height,opacity] duration-200",
+            "h-0 overflow-hidden opacity-0 transition-[height,opacity] duration-200 ease-out",
             "sm:group-has-[*[data-dragging=true]]:h-7 sm:group-has-[*[data-dragging=true]]:opacity-100 sm:group-hover:group-data-[active=true]:h-7 sm:group-hover:group-data-[active=true]:opacity-100"
           )}
           role="region"
@@ -228,7 +228,7 @@ function NewsCard({
             <button
               type="button"
               onClick={dismiss}
-              className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-75"
+              className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 ease"
             >
               Dismiss
             </button>

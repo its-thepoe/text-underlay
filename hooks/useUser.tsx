@@ -34,20 +34,50 @@ export const MyUserContextProvider = (props: Props) => {
     const [isLoadingData, setIsLoadingData] = useState(false)
     const [userDetails, setUserDetails] = useState<Profile | null>(null)
 
+    // Refresh session on mount to ensure we have the latest user data
+    useEffect(() => {
+        if (session && !user) {
+            console.log('Session available but no user, refreshing...');
+            supabase.auth.refreshSession();
+        }
+    }, [session, user, supabase.auth])
+
     useEffect(() => {
         if (user && !isLoadingData && !userDetails) {
             setIsLoadingData(true)
+            console.log('Fetching user profile for:', user.id);
 
             getUserProfile(user.id).then(
                 (data) => {
+                    console.log('User profile fetched:', data);
                     setUserDetails(data as Profile);
                     setIsLoadingData(false)
                 }
             ).catch((error) => {
                 console.error('Error fetching user details:', error);
-                setIsLoadingData(false)
+                // If it's a 406 error, try creating the profile
+                if (error.message?.includes('406') || error.code === 'PGRST116') {
+                    console.log('Attempting to create profile...');
+                    import('@/lib/supabase').then(({ createOrUpdateProfile }) => {
+                        createOrUpdateProfile(user.id, {
+                            full_name: user.user_metadata?.full_name,
+                            avatar_url: user.user_metadata?.avatar_url,
+                            username: user.user_metadata?.email
+                        }).then((profile) => {
+                            console.log('Profile created:', profile);
+                            setUserDetails(profile as Profile);
+                            setIsLoadingData(false);
+                        }).catch((createError) => {
+                            console.error('Error creating profile:', createError);
+                            setIsLoadingData(false);
+                        });
+                    });
+                } else {
+                    setIsLoadingData(false);
+                }
             })
         } else if (!user && !isLoadingUser && !isLoadingData) {
+            console.log('Clearing user details');
             setUserDetails(null);
         }
     }, [user, isLoadingUser])

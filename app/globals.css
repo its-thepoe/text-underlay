@@ -16,7 +16,7 @@
   }
   
   .theme {
-    --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+    --animate-shimmer-slide: shimmer-slide var(--speed) cubic-bezier(.25, .46, .45, .94) infinite alternate;
     --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
   }
 }
@@ -27,6 +27,18 @@
   }
   body {
     @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+  }
+  
+  /* Accessibility: Disable animations for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 

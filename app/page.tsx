@@ -29,7 +29,7 @@ import '@/app/fonts.css';
 import PayDialog from '@/components/pay-dialog';
 
 const Page = () => {
-    const { user } = useUser();
+    const { user, userDetails, isLoading } = useUser();
     const { session } = useSessionContext();
     const supabaseClient = useSupabaseClient();
     const [currentUser, setCurrentUser] = useState<Profile>()
@@ -363,8 +363,16 @@ const Page = () => {
 };
 
     useEffect(() => {
-      if (user?.id) {
-        getCurrentUser(user.id)
+      console.log('User state changed:', { 
+        user: user?.id, 
+        userDetails, 
+        isLoading,
+        session: session?.user?.id,
+        accessToken: !!session?.access_token
+      });
+      if (user?.id && userDetails) {
+        console.log('Setting current user:', userDetails);
+        setCurrentUser(userDetails);
         
         // Check for pending save after login
         const pendingSave = localStorage.getItem('pendingSave');
@@ -405,8 +413,10 @@ const Page = () => {
             localStorage.removeItem('pendingSave');
           }
         }
+      } else if (!user) {
+        setCurrentUser(undefined);
       }
-    }, [user])
+    }, [user, userDetails])
     
     // Undo/Redo keyboard handlers
     useEffect(() => {
