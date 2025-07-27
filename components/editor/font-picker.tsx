@@ -36,7 +36,7 @@ const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
     <Popover>
       <div className='flex flex-row items-center justify-between gap-3 my-4'>
         <div className="flex flex-col items-start">
-          <Label className="gap-1">Font Family</Label>
+          <Label className="gap-1">Font</Label>
         </div>
         <PopoverTrigger asChild>
           <Button
@@ -47,7 +47,7 @@ const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
               !currentFont && "text-gray-500 dark:text-gray-400"
             )}
           >
-            {currentFont ? currentFont : "Select font family"}
+            {currentFont ? currentFont : "Select font"}
             <ArrowDown2 className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -55,11 +55,11 @@ const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
       <PopoverContent className="w-full p-0">
         <Command>
           <CommandInput
-            placeholder="Search font family..."
+            placeholder="Search font..."
             className="h-9"
           />
           <CommandList>
-            <CommandEmpty>No font family found.</CommandEmpty>
+            <CommandEmpty>No font found.</CommandEmpty>
             <CommandGroup heading="All Fonts">
               {ALL_FONTS.map((font) => (
                 <CommandItem

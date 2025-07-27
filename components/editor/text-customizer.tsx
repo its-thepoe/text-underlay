@@ -59,8 +59,8 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
         { id: 'letterSpacing', icon: <ArrowSwapHorizontal size={20} />, label: 'Letter spacing' },
         { id: 'opacity', icon: <Lamp size={20} />, label: 'Opacity' },
         { id: 'rotation', icon: <RotateRight size={20} />, label: 'Rotate' },
-        { id: 'tiltX', icon: <ArrowSwapHorizontal size={20} />, label: 'Tilt X (3D effect)' },
-        { id: 'tiltY', icon: <ArrowSwapHorizontal size={20} />, label: 'Tilt Y (3D effect)' },
+        { id: 'tiltX', icon: <ArrowSwapHorizontal size={20} />, label: 'Tilt X (3D)' },
+        { id: 'tiltY', icon: <ArrowSwapHorizontal size={20} />, label: 'Tilt Y (3D)' },
     ];  
 
     const handlePremiumAttributeChange = (attribute: string, value: any) => {
@@ -75,7 +75,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
             <AccordionTrigger>{textSet.text}</AccordionTrigger>
             <AccordionContent>
                 {/* Mobile Controls */}
-                <div className="md:hidden" role="region" aria-label="Mobile Text Controls">
+                <div className="md:hidden max-h-[60vh] overflow-y-auto overflow-x-hidden" role="region" aria-label="Mobile Text Controls">
                     <div className="flex w-full gap-1 mb-2 p-1" role="tablist" aria-label="Control Tabs">
                         {['text', 'position', 'effects'].map(tab => (
                             <button
@@ -94,7 +94,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                             </button>
                         ))}
                     </div>
-                    <div className="mt-2" role="tabpanel" aria-label="Control Panel">
+                    <div className="mt-2 pb-4" role="tabpanel" aria-label="Control Panel">
                         {/* TEXT TAB */}
                         {activeControl === 'text' && (
                             <>
@@ -112,7 +112,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                                 />
                                 <SliderField
                                     attribute="fontSizePct"
-                                    label="Text Size (% of image height)"
+                                    label="Text Size"
                                     min={1}
                                     max={100}
                                     step={1}
@@ -166,25 +166,21 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                                 />
                                 <SliderField
                                     attribute="tiltX"
-                                    label="Horizontal Tilt (3D effect)"
+                                    label="Horizontal Tilt (3D)"
                                     min={-90}
                                     max={90}
                                     step={1}
                                     currentValue={textSet.tiltX}
-                                    handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                                    disabled={!isPaidUser}
-                                    premiumFeature={!isPaidUser}
+                                    handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                                 />
                                 <SliderField
                                     attribute="tiltY"
-                                    label="Vertical Tilt (3D effect)"
+                                    label="Vertical Tilt (3D)"
                                     min={-90}
                                     max={90}
                                     step={1}
                                     currentValue={textSet.tiltY}
-                                    handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                                    disabled={!isPaidUser}
-                                    premiumFeature={!isPaidUser}
+                                    handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                                 />
                             </>
                         )}
@@ -223,7 +219,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                 </div>
 
                 {/* Desktop Layout */}
-                <div className="hidden md:block hide-scrollbar" style={{overflowY: 'auto'}} role="region" aria-label="Desktop Text Controls">
+                <div className="hidden md:block max-h-[70vh] overflow-y-auto overflow-x-hidden" role="region" aria-label="Desktop Text Controls">
                     <InputField
                         attribute="text"
                         label="Text"
@@ -299,26 +295,22 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                         />
                         <SliderField
                             attribute="tiltX"
-                            label="Horizontal Tilt (3D effect)"
+                            label="Horizontal Tilt (3D)"
                             min={-45}
                             max={45}
                             step={1}
                             currentValue={textSet.tiltX}
-                            handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                            disabled={false}
-                            premiumFeature={false}
+                            handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                             hasTopPadding={false}
                         />
                         <SliderField
                             attribute="tiltY"
-                            label="Vertical Tilt (3D effect)"
+                            label="Vertical Tilt (3D)"
                             min={-45}
                             max={45}
                             step={1}
                             currentValue={textSet.tiltY}
-                            handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                            disabled={false}
-                            premiumFeature={false}
+                            handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                             hasTopPadding={false}
                         />
                     </div>

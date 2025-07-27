@@ -239,7 +239,7 @@ export function Sidebar({
 
         {/* News Section */}
         {!isCollapsed && (
-          <div className="flex-1 overflow-hidden" role="region" aria-label="News Feed">
+          <div className="flex-1 overflow-hidden mt-6 border-t border-gray-200 dark:border-gray-700 pt-4" role="region" aria-label="News Feed">
             <News articles={DEMO_ARTICLES} />
           </div>
         )}
@@ -255,7 +255,7 @@ export function Sidebar({
                       <DropdownMenuTrigger asChild>
                         <div className="flex items-center px-3 py-2 rounded-md bg-white dark:bg-gray-900 hover:bg-slate-50 dark:hover:bg-gray-700/30 transition-colors duration-200 ease cursor-pointer" role="button" aria-label="User Profile Menu">
                           <Avatar className="w-8 h-8">
-                            <AvatarImage src={currentUser?.avatar_url} /> 
+                            <AvatarImage src="/dipo-avatar.jpg" /> 
                             <AvatarFallback>{currentUser?.full_name?.[0]?.toUpperCase() ?? "?"}</AvatarFallback>
                           </Avatar>
                           <div className="flex-1 min-w-0 ml-2.5" role="region" aria-label="User Info">
@@ -280,7 +280,7 @@ export function Sidebar({
                                   ) : (
                     <div className="flex justify-center" role="region" aria-label="Collapsed User Avatar">
                       <Avatar className="w-9 h-9">
-                        <AvatarImage src={currentUser?.avatar_url} /> 
+                        <AvatarImage src="public/dipo-avatar.png" /> 
                         <AvatarFallback>{currentUser?.full_name?.[0]?.toUpperCase() ?? "?"}</AvatarFallback>
                       </Avatar>
                     </div>

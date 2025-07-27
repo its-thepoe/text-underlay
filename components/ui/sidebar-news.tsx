@@ -14,7 +14,7 @@ export interface NewsArticle {
   image: string;
 }
 
-const OFFSET_FACTOR = 4;
+const OFFSET_FACTOR = 8;
 const SCALE_FACTOR = 0.03;
 const OPACITY_FACTOR = 0.1;
 
