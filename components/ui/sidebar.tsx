@@ -152,34 +152,36 @@ export function Sidebar({
         <nav className="flex-1 pl-3 py-2 overflow-y-auto" role="navigation" aria-label="Sidebar Navigation">
           <ul className="space-y-2" role="list" aria-label="Navigation Items">
             {/* Undo/Redo Controls */}
-            <li className="flex gap-2" role="listitem" aria-label="Undo Redo Controls">
-              <Button 
-                variant='outline' 
-                size='icon' 
-                onClick={onUndo} 
-                disabled={!canUndo}
-                className="flex-1"
-                title="Undo"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M7.13 18.31h8c2.76 0 5-2.24 5-5s-2.24-5-5-5h-11"/>
-                  <path d="M6.43 10.81 3.87 8.25l2.56-2.56"/>
-                </svg>
-              </Button>
-              <Button 
-                variant='outline' 
-                size='icon' 
-                onClick={onRedo} 
-                disabled={!canRedo}
-                className="flex-1"
-                title="Redo"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M16.87 18.31h-8c-2.76 0-5-2.24-5-5s2.24-5 5-5h11"/>
-                  <path d="M17.57 10.81 20.13 8.25l-2.56-2.56"/>
-                </svg>
-              </Button>
-            </li>
+            {hasImage && (
+              <li className="flex gap-2" role="listitem" aria-label="Undo Redo Controls">
+                <Button 
+                  variant='outline' 
+                  size='icon' 
+                  onClick={onUndo} 
+                  disabled={!canUndo}
+                  className="flex-1"
+                  title="Undo"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M7.13 18.31h8c2.76 0 5-2.24 5-5s-2.24-5-5-5h-11"/>
+                    <path d="M6.43 10.81 3.87 8.25l2.56-2.56"/>
+                  </svg>
+                </Button>
+                <Button 
+                  variant='outline' 
+                  size='icon' 
+                  onClick={onRedo} 
+                  disabled={!canRedo}
+                  className="flex-1"
+                  title="Redo"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16.87 18.31h-8c-2.76 0-5-2.24-5-5s2.24-5 5-5h11"/>
+                    <path d="M17.57 10.81 20.13 8.25l-2.56-2.56"/>
+                  </svg>
+                </Button>
+              </li>
+            )}
 
             {/* User Status */}
             {user && currentUser && (
