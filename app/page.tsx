@@ -496,7 +496,7 @@ const Page = () => {
                 />
                 
                 <div className='flex flex-col flex-1 h-screen p-4' role="region" aria-label="Main Content Area">
-                <div className='flex flex-col flex-1 h-full p-2 border border-gray-200 dark:border-gray-800 rounded-2xl bg-white dark:bg-black'>
+                <div className='flex flex-col flex-1 h-full p-2 border border-gray-200 dark:border-gray-800 rounded-[20px] bg-white dark:bg-black'>
                 <input
                     type="file"
                     ref={fileInputRef}
@@ -504,7 +504,7 @@ const Page = () => {
                     onChange={handleFileChange}
                     accept=".jpg, .jpeg, .png"
                 /> 
-                    <div className='flex-1 flex flex-col md:flex-row gap-4 md:gap-8 overflow-hidden w-full h-full px-2 md:px-8 py-2' role="region" aria-label="Workspace Layout">
+                    <div className='flex-1 flex flex-col md:flex-row gap-4 md:gap-8 overflow-hidden w-full h-full px-2 py-2' role="region" aria-label="Workspace Layout">
                         {/* Image Preview + Controls wrapper */}
                         <div className='flex flex-1 flex-col md:flex-row gap-4 w-full h-full' role="region" aria-label="Image Editor Workspace">
                          
@@ -547,7 +547,7 @@ const Page = () => {
                             </div>
                             <div
                                 ref={previewRef}
-                                className="min-h-[400px] w-full p-4 border border-border rounded-lg relative overflow-hidden"
+                                className="min-h-[400px] w-full p-4 border border-border border-gray-200 dark:border-gray-900 rounded-[12px] relative overflow-hidden"
                                 role="region" 
                                 aria-label="Image Preview Canvas"
                             >
@@ -631,7 +631,7 @@ const Page = () => {
                             </div>
         
                         </div>
-                        <div className='flex flex-col w-full md:w-1/3' role="region" aria-label="Text Customization Panel">
+                        <div className='flex flex-col w-full md:w-1/4' role="region" aria-label="Text Customization Panel">
                             <Button variant="secondary" onClick={addNewTextSet}><Add className='mr-2'/> Add New Text Set</Button>
                             <ScrollArea className="h-[calc(100vh-10rem)] p-2" role="region" aria-label="Text Sets List">
                                 <Accordion type="single" collapsible className="w-full mt-2">

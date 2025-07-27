@@ -247,11 +247,11 @@ export function Sidebar({
           {user && currentUser ? (
                           <>
                 {/* Profile Section */}
-                <div className={` bg-slate-50/30 dark:bg-gray-800/30 ${isCollapsed ? 'py-3 px-2' : 'p-3'}`} role="region" aria-label="User Profile">
+                <div className={`  ${isCollapsed ? 'py-3 pl-2' : 'pl-3 py-3'}`} role="region" aria-label="User Profile">
                   {!isCollapsed ? (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <div className="flex items-center px-3 py-2 rounded-md bg-white dark:bg-gray-800 hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors duration-200 ease cursor-pointer" role="button" aria-label="User Profile Menu">
+                        <div className="flex items-center px-3 py-2 rounded-md bg-white dark:bg-gray-900 hover:bg-slate-50 dark:hover:bg-gray-700/30 transition-colors duration-200 ease cursor-pointer" role="button" aria-label="User Profile Menu">
                           <Avatar className="w-8 h-8">
                             <AvatarImage src={currentUser?.avatar_url} /> 
                             <AvatarFallback>{currentUser?.full_name?.[0]?.toUpperCase() ?? "?"}</AvatarFallback>
@@ -286,7 +286,7 @@ export function Sidebar({
                 </div>
 
                 {/* Logout Button */}
-                <div className="p-3" role="region" aria-label="Logout Section">
+                <div className="pl-3 py-3" role="region" aria-label="Logout Section">
                   <Button
                     variant="outline"
                     className={`w-full gap-2 text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20 ${isCollapsed ? "justify-center p-2" : ""}`}

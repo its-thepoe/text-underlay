@@ -77,7 +77,8 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
     ];  
 
     const handlePremiumAttributeChange = (attribute: string, value: any) => {
-        if (isPaidUser || (attribute !== 'letterSpacing' && attribute !== 'tiltX' && attribute !== 'tiltY')) {
+        // All features are now free
+        if (true) {
             handleAttributeChange(textSet.id, attribute, value);
         }
     };
@@ -149,7 +150,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                             <>
                                 <SliderField
                                     attribute="xPct"
-                                    label="X Position (%)"
+                                    label="X Position"
                                     min={-100}
                                     max={100}
                                     step={1}
@@ -159,7 +160,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                                 />
                                 <SliderField
                                     attribute="yPct"
-                                    label="Y Position (%)"
+                                    label="Y Position"
                                     min={-100}
                                     max={100}
                                     step={1}
@@ -242,7 +243,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                         currentValue={textSet.text}
                         handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                     />
-                    <div className='flex flex-row items-center gap-12 w-full' role="region" aria-label="Font and Color Controls">
+                   
                         <FontFamilyPicker
                             attribute="fontFamily"
                             currentFont={textSet.fontFamily}
@@ -255,11 +256,11 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                             currentColor={textSet.color}
                             handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                         />
-                    </div>
+              
                     <div className="flex flex-col gap-2 mt-4" role="region" aria-label="Text Positioning Controls">
                         <SliderField
                             attribute="xPct"
-                            label="X Position (%)"
+                            label="X Position"
                             min={-100}
                             max={100}
                             step={1}
@@ -269,7 +270,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                         />
                         <SliderField
                             attribute="yPct"
-                            label="Y Position (%)"
+                            label="Y Position"
                             min={-100}
                             max={100}
                             step={1}
@@ -285,8 +286,8 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                             step={1}
                             currentValue={textSet.letterSpacing}
                             handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                            disabled={!isPaidUser}
-                            premiumFeature={!isPaidUser}
+                            disabled={false}
+                            premiumFeature={false}
                             hasTopPadding={false}
                         />
                         <SliderField
@@ -317,8 +318,8 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                             step={1}
                             currentValue={textSet.tiltX}
                             handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                            disabled={!isPaidUser}
-                            premiumFeature={!isPaidUser}
+                            disabled={false}
+                            premiumFeature={false}
                             hasTopPadding={false}
                         />
                         <SliderField
@@ -329,8 +330,8 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                             step={1}
                             currentValue={textSet.tiltY}
                             handleAttributeChange={(attribute, value) => handlePremiumAttributeChange(attribute, value)}
-                            disabled={!isPaidUser}
-                            premiumFeature={!isPaidUser}
+                            disabled={false}
+                            premiumFeature={false}
                             hasTopPadding={false}
                         />
                     </div>

@@ -23,7 +23,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
 }) => {
 
   return (
-    <div className={`flex flex-col gap-2`}>
+    <div className={`flex flex-row items-center justify-between gap-2`}>
       <Label htmlFor={attribute}>{label}</Label>
 
       <div className='flex flex-wrap gap-1 p-1'>
@@ -43,10 +43,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
             sideOffset={10}
           >
             <Tabs defaultValue='colorPicker'>
-              <TabsList className='grid w-full grid-cols-2'>
-                <TabsTrigger value='colorPicker'>🎨</TabsTrigger>
-                <TabsTrigger value='suggestions'>⚡️</TabsTrigger>
-              </TabsList>
+             
               <TabsContent value='colorPicker'>
                 <ChromePicker
                   color={currentColor}

@@ -92,9 +92,9 @@ const SliderField: React.FC<SliderFieldProps> = ({
   return (
     <>
       <style>{sliderStyles}</style>
-      <div className={`flex items-center justify-between ${hasTopPadding ? 'mt-8' : ''}`}>
-        <div className="flex items-center gap-2">
-          <Label htmlFor={attribute}>{label}</Label>
+      <div className={`flex items-center gap-4 ${hasTopPadding ? 'mt-4' : 'mt-2'}`} style={{ position: 'relative', minHeight: 44 }}>
+        <div className="flex items-center gap-2 min-w-[120px]">
+          <Label htmlFor={attribute} className="whitespace-nowrap">{label}</Label>
           {premiumFeature && (
             <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
               <Lock size="16" />
@@ -102,31 +102,7 @@ const SliderField: React.FC<SliderFieldProps> = ({
             </div>
           )}
         </div>
-        <div
-          style={{
-            width: 54,
-            borderRadius: 4,
-            border: 'none',
-            padding: '4px 6px',
-            fontSize: 15,
-            fontWeight: 400,
-            outline: 'none',
-            textAlign: 'center',
-            background: 'transparent',
-            color: '#666',
-            userSelect: 'none',
-            pointerEvents: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          aria-label={label + ' Value Display'}
-        >
-          {currentValue}
-        </div>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', width: '100%', gap: 8, position: 'relative', minHeight: 60 }}>
-        <div style={{ flex: 1, position: 'relative' }}>
+        <div style={{ flex: 1, position: 'relative', width: '100%' }}>
           <input
             ref={sliderRef}
             id={attribute}
@@ -191,66 +167,6 @@ const SliderField: React.FC<SliderFieldProps> = ({
               {currentValue}
             </div>
           )}
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
-          <button
-            type="button"
-            aria-label={label + ' Decrement'}
-            disabled={disabled || currentValue <= min}
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: 6,
-              border: '1px solid #e5e7eb',
-              background: '#f4f4f5',
-              color: '#222',
-              fontWeight: 700,
-              fontSize: 20,
-              cursor: disabled || currentValue <= min ? 'not-allowed' : 'pointer',
-              opacity: disabled || currentValue <= min ? 0.4 : 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 0,
-              userSelect: 'none',
-            }}
-            onClick={() => {
-              if (!disabled && currentValue > min) {
-                handleAttributeChange(attribute, Math.max(min, currentValue - step));
-              }
-            }}
-          >
-            –
-          </button>
-          <button
-            type="button"
-            aria-label={label + ' Increment'}
-            disabled={disabled || currentValue >= max}
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: 6,
-              border: '1px solid #e5e7eb',
-              background: '#f4f4f5',
-              color: '#222',
-              fontWeight: 700,
-              fontSize: 20,
-              cursor: disabled || currentValue >= max ? 'not-allowed' : 'pointer',
-              opacity: disabled || currentValue >= max ? 0.4 : 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 0,
-              userSelect: 'none',
-            }}
-            onClick={() => {
-              if (!disabled && currentValue < max) {
-                handleAttributeChange(attribute, Math.min(max, currentValue + step));
-              }
-            }}
-          >
-            +
-          </button>
         </div>
       </div>
     </>
