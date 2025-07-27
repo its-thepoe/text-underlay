@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ModeToggle } from '@/components/mode-toggle';
-import LoginButton from '@/components/login-button';
-import { Logout } from 'iconsax-react';
+
+
+import { HambergerMenu, CloseSquare } from 'iconsax-react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 interface MobileTopNavProps {
@@ -16,6 +16,8 @@ interface MobileTopNavProps {
   onUploadImage: () => void;
   onSaveImage: () => void;
   onPayDialogOpen: () => void;
+  isSidebarOpen: boolean;
+  onToggleSidebar: () => void;
 }
 
 export function MobileTopNav({
@@ -28,23 +30,29 @@ export function MobileTopNav({
   onRedo,
   onUploadImage,
   onSaveImage,
-  onPayDialogOpen
+  onPayDialogOpen,
+  isSidebarOpen,
+  onToggleSidebar
 }: MobileTopNavProps) {
   const supabaseClient = useSupabaseClient();
 
-  const handleLogout = async () => {
-    try {
-      await supabaseClient.auth.signOut();
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
-
   return (
-    <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
-      <div className="flex items-center justify-between">
-        {/* Left side - App title and undo/redo */}
+    <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 px-4 py-3">
+      <div className="flex items-center justify-start gap-4">
+        {/* Left side - Sidebar trigger, app title and undo/redo */}
         <div className="flex items-center gap-3">
+          {/* Sidebar trigger */}
+          <button
+            onClick={onToggleSidebar}
+            className="py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 ease-out"
+            aria-label="Toggle sidebar"
+          >
+            {isSidebarOpen ? 
+              <CloseSquare size="20" className="text-slate-600 dark:text-gray-300" /> : 
+              <HambergerMenu size="20" className="text-slate-600 dark:text-gray-300" />
+            }
+          </button>
+          
           <h1 className="font-semibold text-slate-800 dark:text-white text-base">Text Underlay</h1>
           
           {/* Undo/Redo buttons */}
@@ -112,23 +120,10 @@ export function MobileTopNav({
                   {2 - (currentUser.images_generated)} {2 - (currentUser.images_generated) === 1 ? 'gen' : 'gens'} left
                 </div>
               )}
-              
-              {/* Logout button */}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleLogout}
-                className="h-8 px-2"
-              >
-                <Logout size="14" />
-              </Button>
             </div>
-          ) : (
-            <LoginButton />
-          )}
+          ) : null}
 
-          {/* Theme toggle */}
-          <ModeToggle />
+
         </div>
       </div>
     </div>

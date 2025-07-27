@@ -93,7 +93,8 @@ const Page = () => {
       }, 0);
     }, []);
 
-    const [isPayDialogOpen, setIsPayDialogOpen] = useState<boolean>(false); 
+    const [isPayDialogOpen, setIsPayDialogOpen] = useState<boolean>(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const previewRef = useRef<HTMLDivElement>(null);
@@ -494,6 +495,8 @@ const Page = () => {
                 onUploadImage={handleUploadImage}
                 onSaveImage={saveCompositeImage}
                 onPayDialogOpen={() => setIsPayDialogOpen(true)}
+                isSidebarOpen={isSidebarOpen}
+                onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
             />
             
             <div className='flex h-screen overflow-x-hidden' role="main" aria-label="Text Underlay Application">
@@ -508,6 +511,8 @@ const Page = () => {
                     user={user}
                     currentUser={currentUser}
                     onPayDialogOpen={() => setIsPayDialogOpen(true)}
+                    isOpen={isSidebarOpen}
+                    onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
                 />
                 
                 <div className='flex flex-col flex-1 h-screen p-2 md:p-4 pt-16 md:pt-4' role="region" aria-label="Main Content Area">
@@ -523,30 +528,10 @@ const Page = () => {
                         {/* Image Preview + Controls wrapper */}
                         <div className='flex flex-1 flex-col md:flex-row gap-4 w-full h-full min-h-0' role="region" aria-label="Image Editor Workspace">
                          
-                            {/* Mobile Login/Usage Status - Above Image */}
-                            <div className='block md:hidden mb-2 order-1' role="region" aria-label="Mobile Login Status">
-                                {user && currentUser?.paid ? (
-                                    <p className='text-sm'>
 
-                                    </p>
-                                ) : (
-                                    <div className='flex items-center gap-5' role="region" aria-label="Usage Limit Display">
-                                        <p className='text-sm'>
-                                            {user && currentUser ? `${2 - (currentUser.images_generated)} ${2 - (currentUser.images_generated) === 1 ? 'generation' : 'generations'} left` : 'Login to start creating'}
-                                        </p>
-                                        <Button 
-                                            variant="link" 
-                                            className="p-0 h-auto text-sm text-blue-600 hover:underline"
-                                            onClick={() => setIsPayDialogOpen(true)}
-                                        >
-                                            Upgrade
-                                        </Button>
-                                    </div>
-                                )}
-                            </div>
                             
                             {/* Controls Section */}
-                            <div className='w-full md:w-[420px] max-w-full flex flex-col overflow-hidden h-full md:hidden order-3 md:order-1' role="region" aria-label="Mobile Controls Panel">
+                            <div className='w-full md:w-[420px] max-w-full flex flex-col overflow-hidden h-full md:hidden order-2 md:order-1' role="region" aria-label="Mobile Controls Panel">
                                 {selectedImage && (
                                     <button
                                         onClick={saveCompositeImage}
@@ -564,7 +549,7 @@ const Page = () => {
                             </div>
                             <div
                                 ref={previewRef}
-                                className="min-h-[400px] w-full p-2 md:p-4 border border-border border-gray-200 dark:border-gray-900 rounded-[12px] relative overflow-hidden flex-1 order-2 md:order-2"
+                                className="min-h-[400px] w-full p-2 md:p-4 border border-border border-gray-200 dark:border-gray-900 rounded-[12px] relative overflow-hidden flex-1 order-1 md:order-2"
                                 role="region" 
                                 aria-label="Image Preview Canvas"
                             >
@@ -581,22 +566,19 @@ const Page = () => {
                                             }}
                                         />
                                     ) : (
-                                        <span className='flex items-center w-full gap-2'><Refresh className='animate-spin' /> Loading, please wait</span>
+                                        <div className='flex items-center justify-center h-full w-full'>
+                                            <span className='flex items-center gap-2'><Refresh className='animate-spin' /> Loading, please wait</span>
+                                        </div>
                                     )
                                 ) : (
                                     <div className='flex items-center justify-center h-full' role="region" aria-label="Welcome Screen">
-                                        <div className='text-center space-y-4' role="region" aria-label="Welcome Content">
+                                        <div className='text-center space-y-4 border-t-0' role="region" aria-label="Welcome Content">
                                             <h2 className="text-xl font-semibold">Welcome to Text Underlay!</h2>
-                                            <p className="text-gray-500 dark:text-gray-400">Upload an image to get started creating stunning text-underlay designs.</p>
-                                            {!user && (
-                                                <div className='flex flex-col items-center gap-2' role="region" aria-label="Login Prompt">
-                                                    <p className="text-sm text-gray-500 dark:text-gray-400">Login to save your work and access premium features</p>
-                                                    <LoginButton />
-                                                </div>
-                                            )}
+                                            <p className="text-gray-500 dark:text-gray-400 text-sm md:text-base">Upload an image to get started creating stunning text-underlay designs.</p>
                                         </div>
                                     </div>
-                                )}
+                                )
+                                }
                                 {isImageSetupDone && textSets.map(textSet => {
                                     const previewWidth = previewRef.current?.clientWidth || 1;
                                     const previewHeight = previewRef.current?.clientHeight || 1;

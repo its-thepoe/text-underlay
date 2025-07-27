@@ -16,7 +16,7 @@ import {
 import { Button } from './button';
 import { Avatar, AvatarFallback, AvatarImage } from './avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './dropdown-menu';
-import { ModeToggle } from '@/components/mode-toggle';
+
 import LoginButton from '@/components/login-button';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { News, type NewsArticle } from '@/components/ui/sidebar-news';
@@ -39,6 +39,8 @@ interface SidebarProps {
   user: any;
   currentUser: any;
   onPayDialogOpen: () => void;
+  isOpen?: boolean;
+  onToggle?: () => void;
 }
 
 export function Sidebar({ 
@@ -52,11 +54,17 @@ export function Sidebar({
   hasImage,
   user,
   currentUser,
-  onPayDialogOpen
+  onPayDialogOpen,
+  isOpen: externalIsOpen,
+  onToggle: externalOnToggle
 }: SidebarProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const supabase = useSupabaseClient();
+  
+  // Use external state if provided, otherwise use internal state
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+  const setIsOpen = externalOnToggle ? externalOnToggle : setInternalIsOpen;
 
   // Demo news articles
   const DEMO_ARTICLES: NewsArticle[] = Array.from({ length: 10 }, (_, i) => ({
@@ -81,7 +89,13 @@ export function Sidebar({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const toggleSidebar = () => setIsOpen(!isOpen);
+  const toggleSidebar = () => {
+    if (externalOnToggle) {
+      externalOnToggle();
+    } else {
+      setInternalIsOpen(!internalIsOpen);
+    }
+  };
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
   const handleLogout = async () => {
@@ -93,17 +107,7 @@ export function Sidebar({
 
   return (
     <>
-      {/* Mobile hamburger button */}
-      <button
-        onClick={toggleSidebar}
-        className="fixed top-6 left-6 z-[50] p-3 rounded-lg bg-white shadow-md border border-slate-100 md:hidden hover:bg-slate-50 transition-all duration-200 ease-out dark:bg-gray-800 dark:border-gray-700"
-        aria-label="Toggle sidebar"
-      >
-        {isOpen ? 
-          <CloseSquare size="20" className="text-slate-600 dark:text-gray-300" /> : 
-          <HambergerMenu size="20" className="text-slate-600 dark:text-gray-300" />
-        }
-      </button>
+
 
       {/* Mobile overlay */}
       {isOpen && (
@@ -144,12 +148,11 @@ export function Sidebar({
             </div>
           )}
 
-          {/* Theme toggle button */}
-          <ModeToggle />
+
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 pl-3 py-2 overflow-y-auto" role="navigation" aria-label="Sidebar Navigation">
+        <nav className="flex-1 pl-3 pr-3 py-2 overflow-y-auto" role="navigation" aria-label="Sidebar Navigation">
           <ul className="space-y-2" role="list" aria-label="Navigation Items">
             {/* Undo/Redo Controls */}
             {hasImage && (
@@ -239,7 +242,7 @@ export function Sidebar({
 
         {/* News Section */}
         {!isCollapsed && (
-          <div className="flex-1 overflow-hidden mt-6 border-t border-gray-200 dark:border-gray-700 pt-4" role="region" aria-label="News Feed">
+          <div className="flex-1 overflow-hidden mt-6 border-t border-gray-200 dark:border-gray-700 pt-4 px-3" role="region" aria-label="News Feed">
             <News articles={DEMO_ARTICLES} />
           </div>
         )}
@@ -288,7 +291,7 @@ export function Sidebar({
                 </div>
 
                 {/* Logout Button */}
-                <div className="pl-3 py-3" role="region" aria-label="Logout Section">
+                <div className="pl-3 pr-3 py-3" role="region" aria-label="Logout Section">
                   <Button
                     variant="outline"
                     className={`w-full gap-2 text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20 ${isCollapsed ? "justify-center p-2" : ""}`}
@@ -301,7 +304,7 @@ export function Sidebar({
             </>
                       ) : (
               /* Login Section for non-authenticated users */
-              <div className="py-3 pl-3" role="region" aria-label="Login Section">
+              <div className="py-3 pl-3 pr-3" role="region" aria-label="Login Section">
                 <div className={`flex items-center justify-center ${isCollapsed ? "justify-center" : ""}`} role="region" aria-label="Login Button Container">
                   <LoginButton />
                 </div>
@@ -309,7 +312,7 @@ export function Sidebar({
             )}
             
             {/* Built by section */}
-            <div className="py-3 pl-3" role="region" aria-label="Developer Credits">
+            <div className="py-3 pl-3 pr-3" role="region" aria-label="Developer Credits">
               <div className="flex items-center justify-center gap-6 text-xs text-slate-500 dark:text-gray-400" role="region" aria-label="Credits Content">
                 <div className="flex items-center" role="region" aria-label="Developer Info">
                   <span className="mr-1">Built by</span>
