@@ -22,7 +22,8 @@ import { Sidebar } from '@/components/ui/sidebar';
 import { MobileTopNav } from '@/components/mobile-top-nav';
 
 
-import { Add, Refresh } from 'iconsax-react';
+import { Add } from 'iconsax-react';
+import { LoaderFive } from '@/components/ui/loader';
 
 import { removeBackground } from "@imgly/background-removal";
 
@@ -39,6 +40,7 @@ const Page = () => {
     const [uploadedImageBase64, setUploadedImageBase64] = useState<string | null>(null);
     const [isImageSetupDone, setIsImageSetupDone] = useState<boolean>(false);
     const [removedBgImageUrl, setRemovedBgImageUrl] = useState<string | null>(null);
+    const [loadingState, setLoadingState] = useState<string>('');
     const [textSets, setTextSets] = useState<Array<any>>([]);
     const [pastTextSets, setPastTextSets] = useState<Array<any>[]>([]);
     const [futureTextSets, setFutureTextSets] = useState<Array<any>[]>([]);
@@ -137,6 +139,7 @@ const Page = () => {
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
+            setLoadingState('Processing image...');
             const imageUrl = URL.createObjectURL(file);
             setSelectedImage(imageUrl);
             // Convert file to base64 for persistent restore
@@ -152,10 +155,20 @@ const Page = () => {
 
     const setupImage = async (imageUrl: string) => {
         try {
+            // Keep "Processing image..." for 70% of the time
+            // The background removal takes most of the time, so we'll delay the "Preparing editor..." message
             const imageBlob = await removeBackground(imageUrl);
+            
+            // Now show "Preparing editor..." for the final 30%
+            setLoadingState('Preparing editor...');
+            
+            // Small delay to make "Preparing editor..." visible for a meaningful amount of time
+            await new Promise(resolve => setTimeout(resolve, 300));
+            
             const url = URL.createObjectURL(imageBlob);
             setRemovedBgImageUrl(url);
             setIsImageSetupDone(true);
+            setLoadingState('');
 
             if (currentUser) {
                 await supabaseClient
@@ -172,6 +185,7 @@ const Page = () => {
             };
         } catch (error) {
             console.error(error);
+            setLoadingState('');
         }
     };
 
@@ -567,7 +581,7 @@ const Page = () => {
                                         />
                                     ) : (
                                         <div className='flex items-center justify-center h-full w-full'>
-                                            <span className='flex items-center gap-2'><Refresh className='animate-spin' /> Loading, please wait</span>
+                                            <LoaderFive text={loadingState || "Loading, please wait"} />
                                         </div>
                                     )
                                 ) : (
