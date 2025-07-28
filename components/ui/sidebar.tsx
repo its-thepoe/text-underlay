@@ -242,7 +242,7 @@ export function Sidebar({
 
         {/* News Section */}
         {!isCollapsed && (
-          <div className="flex-1 overflow-hidden mt-6 border-t border-gray-200 dark:border-gray-700 pt-4 px-3" role="region" aria-label="News Feed">
+          <div className="flex-1 overflow-hidden mt-6 pt-4 px-3" role="region" aria-label="News Feed">
             <News articles={DEMO_ARTICLES} />
           </div>
         )}

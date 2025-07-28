@@ -24,7 +24,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
 
   return (
     <div className={`flex flex-row items-center justify-between gap-2`}>
-      <Label htmlFor={attribute}>{label}</Label>
+      <Label htmlFor={attribute} className="text-[13px]">{label}</Label>
 
       <div className='flex flex-wrap gap-1 p-1'>
         <DropdownMenu>

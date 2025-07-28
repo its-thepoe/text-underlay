@@ -75,7 +75,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
             <AccordionTrigger>{textSet.text}</AccordionTrigger>
             <AccordionContent>
                 {/* Mobile Controls */}
-                <div className="md:hidden max-h-[60vh] overflow-y-auto overflow-x-hidden" role="region" aria-label="Mobile Text Controls">
+                <div className="md:hidden max-h-[60vh] overflow-y-auto overflow-x-visible" role="region" aria-label="Mobile Text Controls">
                     <div className="flex w-full gap-1 mb-2 p-1" role="tablist" aria-label="Control Tabs">
                         {['text', 'position', 'effects'].map(tab => (
                             <button
@@ -219,7 +219,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                 </div>
 
                 {/* Desktop Layout */}
-                <div className="hidden md:block max-h-[70vh] overflow-y-auto overflow-x-hidden" role="region" aria-label="Desktop Text Controls">
+                <div className="hidden md:block max-h-[70vh] overflow-y-auto overflow-x-visible" role="region" aria-label="Desktop Text Controls">
                     <InputField
                         attribute="text"
                         label="Text"
@@ -240,7 +240,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
                             handleAttributeChange={(attribute, value) => handleAttributeChange(textSet.id, attribute, value)}
                         />
               
-                    <div className="flex flex-col gap-2 mt-4" role="region" aria-label="Text Positioning Controls">
+                    <div className="flex flex-col gap-1 mt-4" role="region" aria-label="Text Positioning Controls">
                         <SliderField
                             attribute="xPct"
                             label="X Position"

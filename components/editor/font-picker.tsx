@@ -36,7 +36,7 @@ const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
     <Popover>
       <div className='flex flex-row items-center justify-between gap-3 my-4'>
         <div className="flex flex-col items-start">
-          <Label className="gap-1">Font</Label>
+          <Label className="gap-1 text-[13px]">Font</Label>
         </div>
         <PopoverTrigger asChild>
           <Button

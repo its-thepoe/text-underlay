@@ -572,7 +572,7 @@ const Page = () => {
                                     )
                                 ) : (
                                     <div className='flex items-center justify-center h-full' role="region" aria-label="Welcome Screen">
-                                        <div className='text-center space-y-4 border-t-0' role="region" aria-label="Welcome Content">
+                                        <div className='text-center space-y-4' role="region" aria-label="Welcome Content">
                                             <h2 className="text-xl font-semibold">Welcome to Text Underlay!</h2>
                                             <p className="text-gray-500 dark:text-gray-400 text-sm md:text-base">Upload an image to get started creating stunning text-underlay designs.</p>
                                         </div>
