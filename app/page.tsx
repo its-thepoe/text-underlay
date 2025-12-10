@@ -513,7 +513,7 @@ const Page = () => {
                 onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
             />
             
-            <div className='flex h-screen overflow-x-hidden' role="main" aria-label="Text Underlay Application">
+            <div className='flex h-screen-safe overflow-x-hidden' role="main" aria-label="Text Underlay Application">
                 <Sidebar
                     onUploadImage={handleUploadImage}
                     onSaveImage={saveCompositeImage}
@@ -529,7 +529,7 @@ const Page = () => {
                     onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
                 />
                 
-                <div className='flex flex-col flex-1 h-screen p-2 md:p-4 pt-16 md:pt-4' role="region" aria-label="Main Content Area">
+                <div className='flex flex-col flex-1 h-screen-safe p-2 md:p-4 pt-16 md:pt-4' role="region" aria-label="Main Content Area">
                 <div className='flex flex-col flex-1 h-full p-1 md:p-2 border border-gray-200 dark:border-gray-800 rounded-[20px] bg-white dark:bg-black'>
                 <input
                     type="file"

@@ -122,7 +122,7 @@ export function Sidebar({
       {/* Sidebar */}
       <div
         className={`
-          fixed top-0 left-0 h-screen bg-white dark:bg-gray-900 z-[45] transition-all duration-200 ease-out flex flex-col
+          fixed top-0 left-0 h-screen-safe bg-white dark:bg-gray-900 z-[45] transition-all duration-200 ease-out flex flex-col
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           ${isCollapsed ? "w-20" : "w-80"}
           md:translate-x-0 md:static md:z-auto
